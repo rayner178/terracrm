@@ -125,6 +125,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(COORDINADOR)
+  mustChangePassword Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   metricRecords MetricRecord[]

@@ -68,6 +68,7 @@ async function main() {
       name: `Administrador ${name}`,
       password: hashedPassword,
       role: 'SUPER_ADMIN',
+      mustChangePassword: true,
     },
   });
 
