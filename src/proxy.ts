@@ -2,16 +2,25 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
+import { getToken } from "next-auth/jwt";
 
 const intlMiddleware = createMiddleware(routing);
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   if (
     req.nextUrl.pathname.startsWith('/api') || 
     req.nextUrl.pathname.startsWith('/_next') || 
     req.nextUrl.pathname.includes('.')
   ) {
     return NextResponse.next();
+  }
+
+  // Comprobar token para mustChangePassword
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "supersecret123" });
+  if (token && token.mustChangePassword) {
+    if (!req.nextUrl.pathname.includes('/change-password') && !req.nextUrl.pathname.startsWith('/api/auth')) {
+      return NextResponse.redirect(new URL('/es/change-password', req.url));
+    }
   }
 
   if (req.nextUrl.pathname === '/') {
