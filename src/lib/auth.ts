@@ -16,14 +16,19 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Select only needed fields — less data transferred from Supabase
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
+          select: { id: true, email: true, name: true, role: true, password: true, mustChangePassword: true }
         });
 
         if (!user) {
+          // Constant-time dummy compare to prevent timing attacks even on miss
+          await bcrypt.compare(credentials.password, '$2a$08$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
           return null;
         }
 
+        // bcrypt rounds 8 = ~300ms on serverless vs ~1500ms with rounds 10
         const passwordsMatch = await bcrypt.compare(credentials.password, user.password);
 
         if (!passwordsMatch) {

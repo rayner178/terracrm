@@ -15,10 +15,15 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Comprobar token para mustChangePassword
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "supersecret123" });
-  if (token && token.mustChangePassword) {
-    if (!req.nextUrl.pathname.includes('/change-password') && !req.nextUrl.pathname.startsWith('/api/auth')) {
+  // Skip token check on auth routes — avoids JWT parsing overhead on login
+  const isAuthRoute = req.nextUrl.pathname.includes('/login') ||
+                      req.nextUrl.pathname.includes('/change-password') ||
+                      req.nextUrl.pathname.startsWith('/api/auth');
+
+  if (!isAuthRoute) {
+    // Comprobar token para mustChangePassword solo en rutas protegidas
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "supersecret123" });
+    if (token && token.mustChangePassword) {
       return NextResponse.redirect(new URL('/es/change-password', req.url));
     }
   }

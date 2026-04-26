@@ -9,10 +9,10 @@ const globalForPrisma = global as unknown as {
 export const basePrisma = globalForPrisma.basePrisma || new PrismaClient();
 const tenantClients = globalForPrisma.tenantClients || new Map<string, PrismaClient>();
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.basePrisma = basePrisma;
-  globalForPrisma.tenantClients = tenantClients;
-}
+// Cache clients globally in ALL environments to survive warm Lambda containers
+// This is safe — Vercel reuses containers between requests on the same instance
+globalForPrisma.basePrisma = basePrisma;
+globalForPrisma.tenantClients = tenantClients;
 
 const PUBLIC_MODELS = ["tenant", "user"];
 
