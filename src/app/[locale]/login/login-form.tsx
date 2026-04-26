@@ -30,12 +30,11 @@ export function LoginForm() {
       setError("Credenciales inválidas");
       setLoading(false);
     } else {
-      // Detect current locale from URL to keep language consistent
-      const locale = window.location.pathname.split('/')[1] || 'es';
+      // Check if user must change password before going to dashboard
       if ((res as any)?.mustChangePassword) {
-        router.push(`/${locale}/change-password`);
+        router.push("/es/change-password");
       } else {
-        router.push(`/${locale}`);
+        router.push("/es");
       }
       router.refresh();
     }
