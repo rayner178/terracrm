@@ -18,7 +18,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "La contraseña debe tener al menos 8 caracteres" }, { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    // Use rounds 8 for consistency with login performance optimization
+    const hashedPassword = await bcrypt.hash(newPassword, 8);
 
     await prisma.user.update({
       where: { email: session.user.email },

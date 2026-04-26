@@ -11,10 +11,11 @@ export default async function DashboardPage() {
     redirect('/es/login');
   }
 
+  // Limit queries to avoid slow full-table scans on large tenants
   const [volunteersResult, projects, donations] = await Promise.all([
-    container.volunteerRepository.getAll(),
-    container.projectRepository.getAll(),
-    container.donationRepository.getAll(),
+    container.volunteerRepository.getAll({ take: 10 }),
+    container.projectRepository.getAll({ take: 10 }),
+    container.donationRepository.getAll({ take: 10 }),
   ]);
   
   const volunteersCount = volunteersResult.total;

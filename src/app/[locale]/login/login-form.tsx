@@ -30,7 +30,12 @@ export function LoginForm() {
       setError("Credenciales inválidas");
       setLoading(false);
     } else {
-      router.push("/es");
+      // Check if user must change password before going to dashboard
+      if ((res as any)?.mustChangePassword) {
+        router.push("/es/change-password");
+      } else {
+        router.push("/es");
+      }
       router.refresh();
     }
   };
