@@ -13,9 +13,9 @@ export default async function DashboardPage() {
 
   // Limit queries to avoid slow full-table scans on large tenants
   const [volunteersResult, projects, donations] = await Promise.all([
-    container.volunteerRepository.getAll({ take: 10 }),
-    container.projectRepository.getAll({ take: 10 }),
-    container.donationRepository.getAll({ take: 10 }),
+    container.volunteerRepository.getAll(1, 10),
+    container.projectRepository.getAll(),
+    container.donationRepository.getAll(),
   ]);
   
   const volunteersCount = volunteersResult.total;
