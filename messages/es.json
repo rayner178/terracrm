@@ -1,0 +1,23 @@
+{
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "volunteers": "Voluntarios",
+    "projects": "Proyectos",
+    "funding": "Fondos",
+    "reports": "Reportes",
+    "donate": "Donar",
+    "impact": "Impacto Ecológico"
+  },
+  "Impact": {
+    "title": "Métricas de Impacto Ecológico",
+    "recordValue": "Registrar Valor",
+    "value": "Valor",
+    "save": "Guardar",
+    "metric": "Métrica",
+    "project": "Proyecto (Opcional)"
+  },
+  "Common": {
+    "search": "Buscar...",
+    "logout": "Cerrar sesión"
+  }
+}

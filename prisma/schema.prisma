@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Para migrar a PostgreSQL (Escalabilidad):
+// 1. Cambia provider = "sqlite" por provider = "postgresql"
+// 2. En tu archivo .env, configura DATABASE_URL con tu connection string de Postgres (e.g. Supabase, AWS RDS)
+// 3. Ejecuta: npx prisma migrate dev --name init_postgres
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Volunteer {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String   @unique
+  phone       String?
+  skills      String? // comma separated for now
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projectAssignments ProjectAssignment[]
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  location      String?
+  ecosystemType String?  // MARINO, TERRESTRE, HUMEDAL
+  geom          Unsupported("geometry")?
+  status        String   @default("PLANNING") // PLANNING, ACTIVE, COMPLETED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  assignments ProjectAssignment[]
+  donations   Donation[]
+  metricRecords MetricRecord[]
+}
+
+model ProjectAssignment {
+  id         String   @id @default(cuid())
+  volunteerId String
+  projectId   String
+  assignedAt  DateTime @default(now())
+  hoursWorked Int      @default(0)
+
+  volunteer Volunteer @relation(fields: [volunteerId], references: [id])
+  project   Project   @relation(fields: [projectId], references: [id])
+
+  @@unique([volunteerId, projectId])
+}
+
+model Tenant {
+  id                String   @id @default(uuid())
+  slug              String   @unique
+  name              String
+  domain            String?  @unique
+  koboWebhookSecret String?
+  createdAt         DateTime @default(now())
+}
+
+model KoboFormMapping {
+  id        String   @id @default(cuid())
+  formId    String   @unique
+  mapping   Json     // e.g. { "kobo_field_name": "metricDefinitionId" }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Donation {
+  id              String   @id @default(uuid())
+  donorName       String
+  amount          Float
+  date            DateTime @default(now())
+  project         Project? @relation(fields: [projectId], references: [id])
+  projectId       String?
+  locale          String   @default("es")
+  stripeSessionId String?
+  isRecurring     Boolean  @default(false)
+}
+
+model MetricDefinition {
+  id          String         @id @default(uuid())
+  name        String
+  unit        String
+  category    String
+  description String?
+  records     MetricRecord[]
+  createdAt   DateTime       @default(now())
+}
+
+model MetricRecord {
+  id           String   @id @default(uuid())
+  value        Float
+  date         DateTime @default(now())
+  
+  metric       MetricDefinition @relation(fields: [metricDefinitionId], references: [id])
+  metricDefinitionId String
+  
+  project      Project? @relation(fields: [projectId], references: [id])
+  projectId    String?
+  
+  recordedBy   User     @relation(fields: [recordedById], references: [id])
+  recordedById String
+}
+
+enum Role {
+  SUPER_ADMIN
+  DIRECTOR
+  TESORERO
+  COORDINADOR
+  AUDITOR
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(COORDINADOR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  metricRecords MetricRecord[]
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  changes   Json
+  ipAddress String?
+  createdAt DateTime @default(now())
+}

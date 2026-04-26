@@ -1,0 +1,36 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TerraCRM Public API",
+    "version": "1.0.0",
+    "description": "API pública de sólo lectura para consultar datos de impacto y transparencia de ONGs en TerraCRM."
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "API v1"
+    }
+  ],
+  "paths": {
+    "/projects": {
+      "get": {
+        "summary": "Obtener proyectos activos",
+        "responses": {
+          "200": {
+            "description": "Lista de proyectos con métricas agregadas"
+          }
+        }
+      }
+    },
+    "/transparency": {
+      "get": {
+        "summary": "Obtener datos agregados de transparencia financiera y ecológica",
+        "responses": {
+          "200": {
+            "description": "Métricas globales y fondos"
+          }
+        }
+      }
+    }
+  }
+}
