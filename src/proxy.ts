@@ -14,6 +14,10 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
+  if (req.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/es', req.url));
+  }
+
   const hostname = req.headers.get("host") || "";
   let tenantSlug = "fundemar";
 
