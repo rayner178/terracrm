@@ -30,7 +30,7 @@ export function LoginForm() {
       setError("Credenciales inválidas");
       setLoading(false);
     } else {
-      router.push("/");
+      router.push("/es");
       router.refresh();
     }
   };
