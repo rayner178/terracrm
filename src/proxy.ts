@@ -6,7 +6,7 @@ import { routing } from "./i18n/routing";
 // 1. Inicializamos el middleware de next-intl
 const intlMiddleware = createMiddleware(routing);
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   // 2. Excluir rutas de API y estáticos
   if (
     req.nextUrl.pathname.startsWith('/api') || 
