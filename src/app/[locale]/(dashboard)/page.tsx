@@ -11,15 +11,24 @@ export default async function DashboardPage() {
     redirect('/es/login');
   }
 
-  // Limit queries to avoid slow full-table scans on large tenants
-  const [volunteersResult, projects, donations] = await Promise.all([
-    container.volunteerRepository.getAll(1, 10),
-    container.projectRepository.getAll(),
-    container.donationRepository.getAll(),
-  ]);
-  
-  const volunteersCount = volunteersResult.total;
+  // Wrap queries in try/catch — if tenant schema is missing, show empty dashboard
+  // instead of crashing the server with a 500
+  let volunteersResult: { data: any[]; total: number } = { data: [], total: 0 };
+  let projects: any[] = [];
+  let donations: any[] = [];
 
+  try {
+    [volunteersResult, projects, donations] = await Promise.all([
+      container.volunteerRepository.getAll(1, 10),
+      container.projectRepository.getAll(),
+      container.donationRepository.getAll(),
+    ]);
+  } catch (e) {
+    console.error("[Dashboard] Error loading tenant data:", e);
+    // Fallback: render dashboard with zeros — no crash
+  }
+
+  const volunteersCount = volunteersResult.total;
   const activeProjects = projects.filter(p => p.status !== "COMPLETED").length;
   const totalFunds = donations.reduce((sum, d) => sum + d.amount, 0);
 
