@@ -5,10 +5,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export default async function DashboardPage() {
+export default async function DashboardPage(props: { params: Promise<{ locale: string }> }) {
+  const { locale } = await props.params;
   const session = await getServerSession(authOptions);
   if (!session) {
-    redirect('/es/login');
+    redirect(`/${locale}/login`);
   }
 
   // Limit queries to avoid slow full-table scans on large tenants

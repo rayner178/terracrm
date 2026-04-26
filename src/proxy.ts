@@ -32,6 +32,11 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL('/es', req.url));
   }
 
+  // Redirect bare /login to localized version
+  if (req.nextUrl.pathname === '/login') {
+    return NextResponse.redirect(new URL('/es/login', req.url));
+  }
+
   const hostname = req.headers.get("host") || "";
   let tenantSlug = "fundemar";
 
