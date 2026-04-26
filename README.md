@@ -2,6 +2,8 @@
 
 TerraCRM es una plataforma SaaS B2B Multi-tenant diseñada específicamente para ONGs de conservación ambiental. Permite a múltiples organizaciones administrar de manera independiente sus recursos, proyectos, fondos y métricas de impacto desde una única infraestructura escalable, asegurando un aislamiento total de datos (aislamiento por esquemas de PostgreSQL).
 
+🌊 **Diseño Dinámico**: Interfaz modernizada con temática oceánica y gradientes fluidos para una experiencia premium.
+
 🌍 **URL de Producción**: [https://terracrm-ten.vercel.app](https://terracrm-ten.vercel.app)
 🔑 **Credenciales de Demo**: `admin@fundemar.org` / `admin123`
 
