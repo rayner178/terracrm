@@ -33,3 +33,24 @@ export async function checkRateLimit(ip: string = "anonymous") {
     return { success: true };
   }
 }
+
+const authRatelimit = isRedisConfigured ? new Ratelimit({
+  redis: redis!,
+  limiter: Ratelimit.slidingWindow(5, "15 m"),
+  analytics: true,
+}) : null;
+
+export async function checkAuthRateLimit(ip: string = "anonymous") {
+  if (!isRedisConfigured || !authRatelimit) {
+    console.warn("⚠️ Auth Rate limiter: Fallback a permitir la request.");
+    return { success: true };
+  }
+
+  try {
+    const result = await authRatelimit.limit(`auth_ratelimit_${ip}`);
+    return result;
+  } catch (error) {
+    console.error("Auth Rate limiter: Error conectando a Redis", error);
+    return { success: true };
+  }
+}
