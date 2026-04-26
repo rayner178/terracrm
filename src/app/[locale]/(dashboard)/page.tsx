@@ -1,8 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, DollarSign, Activity } from "lucide-react";
 import { container } from "@/core/di/registry";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/es/login');
+  }
+
   const [volunteersResult, projects, donations] = await Promise.all([
     container.volunteerRepository.getAll(),
     container.projectRepository.getAll(),
