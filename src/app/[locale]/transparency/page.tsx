@@ -5,18 +5,23 @@ import DynamicProjectMap from "@/components/maps/DynamicProjectMap";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Portal de Transparencia — TerraCRM",
-  description: "Conoce el impacto real de TerraCRM: fondos recaudados, proyectos activos y métricas de conservación.",
-  openGraph: {
-    title: "🌿 Transparencia Total | TerraCRM",
-    description: "El 88% de cada donación va directo a conservación. Ver el impacto real.",
-    type: "website",
-  },
-};
+export async function generateMetadata(
+  { params }: { params: { locale: string } }
+): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "Transparency" });
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      type: "website",
+    },
+  };
+}
 
-// ISR: Cacheamos esta página y la regeneramos en background cada 1 hora (3600 segundos)
-export const revalidate = 3600;
+// Reduced from 3600 to 60 to bust stale ISR cache after i18n fix
+export const revalidate = 60;
 
 interface ImpactMetric {
   id: string;

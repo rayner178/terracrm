@@ -32,7 +32,8 @@
     "loading": "Ingresando...",
     "errorInvalid": "Credenciales inválidas",
     "showPassword": "Mostrar contraseña",
-    "hidePassword": "Ocultar contraseña"
+    "hidePassword": "Ocultar contraseña",
+    "capsLockWarning": "⚠ Mayúsculas activadas"
   },
   "ChangePassword": {
     "label": "Nueva Contraseña",
@@ -40,7 +41,8 @@
     "submit": "Cambiar Contraseña e Iniciar Sesión",
     "loading": "Actualizando...",
     "showPassword": "Mostrar contraseña",
-    "hidePassword": "Ocultar contraseña"
+    "hidePassword": "Ocultar contraseña",
+    "capsLockWarning": "⚠ Mayúsculas activadas"
   },
   "Dashboard": {
     "title": "Resumen General",

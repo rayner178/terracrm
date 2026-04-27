@@ -32,7 +32,8 @@
     "loading": "Signing in...",
     "errorInvalid": "Invalid credentials",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "capsLockWarning": "⚠ Caps Lock is on"
   },
   "ChangePassword": {
     "label": "New Password",
@@ -40,7 +41,8 @@
     "submit": "Change Password & Sign In",
     "loading": "Updating...",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "capsLockWarning": "⚠ Caps Lock is on"
   },
   "Dashboard": {
     "title": "Overview",

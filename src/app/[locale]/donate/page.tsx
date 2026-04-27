@@ -2,15 +2,20 @@ import { getTranslations } from "next-intl/server";
 import { processDonationAction } from "./actions";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Donar — TerraCRM",
-  description: "Apoya la conservación ambiental. Tu donación protege ecosistemas.",
-  openGraph: {
-    title: "Apoya Nuestra Causa 🌿",
-    description: "El 88% de tu donación va directo a conservación. Únete al cambio.",
-    type: "website",
-  },
-};
+export async function generateMetadata(
+  { params }: { params: { locale: string } }
+): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "Donate" });
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      type: "website",
+    },
+  };
+}
 
 export default async function DonatePage({ params }: { params: { locale: string } }) {
   const t = await getTranslations("Donate");

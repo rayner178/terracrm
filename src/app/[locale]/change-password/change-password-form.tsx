@@ -11,6 +11,7 @@ export function ChangePasswordForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [capsLock, setCapsLock] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +49,8 @@ export function ChangePasswordForm() {
             className="block w-full rounded-md border border-slate-300 px-3 py-2 pr-10 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => setCapsLock(e.getModifierState("CapsLock"))}
+            onKeyUp={(e) => setCapsLock(e.getModifierState("CapsLock"))}
             placeholder="••••••••"
           />
           <button
@@ -60,6 +63,11 @@ export function ChangePasswordForm() {
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
+        {capsLock && (
+          <p className="mt-1 text-xs font-medium text-amber-600 flex items-center gap-1">
+            {t("capsLockWarning")}
+          </p>
+        )}
         <p className="mt-1 text-xs text-slate-500">{t("hint")}</p>
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}

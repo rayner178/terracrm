@@ -14,6 +14,7 @@ export function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [capsLock, setCapsLock] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,6 +60,8 @@ export function LoginForm() {
               required
               placeholder={t("passwordPlaceholder")}
               className="pr-10 py-3 min-h-[44px]"
+              onKeyDown={(e) => setCapsLock(e.getModifierState("CapsLock"))}
+              onKeyUp={(e) => setCapsLock(e.getModifierState("CapsLock"))}
             />
             <button
               type="button"
@@ -70,6 +73,11 @@ export function LoginForm() {
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
+          {capsLock && (
+            <p className="mt-1 text-xs font-medium text-amber-600 flex items-center gap-1">
+              {t("capsLockWarning")}
+            </p>
+          )}
         </div>
       </div>
 
