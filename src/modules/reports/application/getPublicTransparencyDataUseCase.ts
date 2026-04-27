@@ -30,7 +30,7 @@ export class GetPublicTransparencyDataUseCase {
         id: def.id,
         name: def.name,
         unit: def.unit,
-        description: def.description,
+        description: def.description ?? undefined, // normalize null → undefined at domain boundary
         totalValue
       };
     }).filter(agg => agg.totalValue > 0);
