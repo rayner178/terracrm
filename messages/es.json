@@ -6,7 +6,12 @@
     "funding": "Fondos",
     "reports": "Reportes",
     "donate": "Donar",
-    "impact": "Impacto Ecológico"
+    "impact": "Impacto Ecológico",
+    "audit": "Auditoría"
+  },
+  "Common": {
+    "search": "Buscar...",
+    "logout": "Cerrar sesión"
   },
   "Impact": {
     "title": "Métricas de Impacto Ecológico",
@@ -16,8 +21,80 @@
     "metric": "Métrica",
     "project": "Proyecto (Opcional)"
   },
-  "Common": {
-    "search": "Buscar...",
-    "logout": "Cerrar sesión"
+  "Login": {
+    "title": "Bienvenido a TerraCRM",
+    "subtitle": "Ingresa tus credenciales para acceder al sistema.",
+    "emailLabel": "Email",
+    "passwordLabel": "Contraseña",
+    "emailPlaceholder": "admin@terracrm.org",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Iniciar Sesión",
+    "loading": "Ingresando...",
+    "errorInvalid": "Credenciales inválidas",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
+  },
+  "ChangePassword": {
+    "label": "Nueva Contraseña",
+    "hint": "Mínimo 8 caracteres, una mayúscula y un número.",
+    "submit": "Cambiar Contraseña e Iniciar Sesión",
+    "loading": "Actualizando...",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
+  },
+  "Dashboard": {
+    "title": "Resumen General",
+    "volunteersCard": "Voluntarios Registrados",
+    "volunteersSubtitle": "En la base de datos",
+    "projectsCard": "Proyectos Activos",
+    "projectsSubtitle": "De {total} en total",
+    "fundsCard": "Fondos Recaudados",
+    "fundsSubtitle": "Total histórico",
+    "donationsCard": "Donaciones Registradas",
+    "donationsSubtitle": "Aportes recibidos",
+    "recentProjects": "Últimos Proyectos",
+    "recentDonations": "Últimas Donaciones",
+    "noProjects": "No hay proyectos registrados.",
+    "noDonations": "No hay donaciones registradas.",
+    "noLocation": "Sin ubicación"
+  },
+  "Transparency": {
+    "metaTitle": "Portal de Transparencia — TerraCRM",
+    "metaDescription": "Conoce el impacto real de TerraCRM: fondos recaudados, proyectos activos y métricas de conservación.",
+    "ogTitle": "🌿 Transparencia Total | TerraCRM",
+    "ogDescription": "El 88% de cada donación va directo a conservación. Ver el impacto real.",
+    "backToDonate": "Volver a Donaciones",
+    "heroTitle": "Portal Público de Transparencia",
+    "heroSubtitle": "En TerraCRM creemos que el impacto real se construye con confianza. Descubre cómo tus aportes están cambiando el mundo.",
+    "fundsRaised": "Fondos Recaudados",
+    "fundsSubtitle": "A través de {count} donaciones",
+    "projectsFunded": "Proyectos Financiados",
+    "projectsSubtitle": "Activos y completados",
+    "adminCost": "Costo Administrativo",
+    "adminSubtitle": "88% va directo a conservación",
+    "impactTitle": "Impacto Ecológico Auditado",
+    "impactSubtitle": "Métricas globales validadas por nuestros coordinadores en campo.",
+    "impactEmpty": "Estamos recopilando las primeras métricas de impacto de este periodo.",
+    "mapTitle": "Mapa Interactivo de Proyectos",
+    "mapSubtitle": "Explora nuestras áreas de intervención a través de ecosistemas críticos.",
+    "ctaTitle": "Sé parte del cambio",
+    "ctaButton": "Hacer una Donación"
+  },
+  "Donate": {
+    "metaTitle": "Donar — TerraCRM",
+    "metaDescription": "Apoya la conservación ambiental. Tu donación protege ecosistemas.",
+    "ogTitle": "Apoya Nuestra Causa 🌿",
+    "ogDescription": "El 88% de tu donación va directo a conservación. Únete al cambio.",
+    "heroTitle": "Apoya Nuestra Causa",
+    "heroSubtitle": "Tu donación protege nuestros ecosistemas.",
+    "nameLabel": "Nombre Completo",
+    "namePlaceholder": "Jane Doe",
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "jane@example.com",
+    "amountLabel": "Monto ($ USD)",
+    "amountPlaceholder": "100",
+    "submit": "Donar con Tarjeta",
+    "transparencyLink": "Ver nuestro Portal de Transparencia →",
+    "stripeNote": "Pagos procesados de forma segura por Stripe."
   }
 }

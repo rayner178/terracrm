@@ -3,23 +3,15 @@
 import { Link, usePathname } from "@/i18n/routing";
 import { Users, Briefcase, DollarSign, FileText, Home, Activity, ShieldAlert, X } from "lucide-react";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useMobileSidebar } from "./MobileSidebarProvider";
-
-const routes = [
-  { name: "Dashboard",   href: "/",            icon: Home,       roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","TESORERO","AUDITOR"] },
-  { name: "Voluntarios", href: "/volunteers",   icon: Users,      roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR"] },
-  { name: "Proyectos",   href: "/projects",     icon: Briefcase,  roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","AUDITOR"] },
-  { name: "Fondos",      href: "/funding",      icon: DollarSign, roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
-  { name: "Reportes",    href: "/reports",      icon: FileText,   roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
-  { name: "Impacto",     href: "/impact",       icon: Activity,   roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","TESORERO","AUDITOR"] },
-  { name: "Auditoría",   href: "/admin/audit",  icon: ShieldAlert,roles: ["SUPER_ADMIN","AUDITOR"] },
-];
 
 interface SidebarProps {
   role?: string;
 }
 
 export function Sidebar({ role }: SidebarProps) {
+  const t = useTranslations("Navigation");
   const { isOpen, close } = useMobileSidebar();
   const pathname = usePathname();
 
@@ -28,13 +20,22 @@ export function Sidebar({ role }: SidebarProps) {
     close();
   }, [pathname, close]);
 
+  const routes = [
+    { name: t("dashboard"),  href: "/",            icon: Home,        roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","TESORERO","AUDITOR"] },
+    { name: t("volunteers"), href: "/volunteers",   icon: Users,       roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR"] },
+    { name: t("projects"),   href: "/projects",     icon: Briefcase,   roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","AUDITOR"] },
+    { name: t("funding"),    href: "/funding",      icon: DollarSign,  roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
+    { name: t("reports"),    href: "/reports",      icon: FileText,    roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
+    { name: t("impact"),     href: "/impact",       icon: Activity,    roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","TESORERO","AUDITOR"] },
+    { name: t("audit"),      href: "/admin/audit",  icon: ShieldAlert, roles: ["SUPER_ADMIN","AUDITOR"] },
+  ];
+
   const filteredRoutes = routes.filter(r => !role || r.roles.includes(role));
 
   const navContent = (
     <div className="flex flex-col w-64 bg-slate-900 text-white min-h-screen">
       <div className="p-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-emerald-400">TerraCRM</h1>
-        {/* Close button — mobile only */}
         <button
           onClick={close}
           className="md:hidden text-slate-400 hover:text-white transition-colors p-1"
@@ -74,13 +75,11 @@ export function Sidebar({ role }: SidebarProps) {
       {/* Mobile drawer — slides in from left */}
       {isOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          {/* Dark overlay — tap to close */}
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={close}
             aria-hidden="true"
           />
-          {/* Drawer panel */}
           <aside className="absolute left-0 top-0 h-full z-10 shadow-2xl">
             {navContent}
           </aside>
