@@ -56,7 +56,7 @@ export function LoginForm() {
               type={showPassword ? "text" : "password"}
               required
               placeholder="••••••••"
-              className="pr-10"
+              className="pr-10 py-3 min-h-[44px]"
             />
             <button
               type="button"

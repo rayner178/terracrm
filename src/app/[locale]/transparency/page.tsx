@@ -3,6 +3,18 @@ import { Link } from "@/i18n/routing";
 import { Globe, Heart, CheckCircle2, TrendingUp, ChevronLeft } from "lucide-react";
 import DynamicProjectMap from "@/components/maps/DynamicProjectMap";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Portal de Transparencia — TerraCRM",
+  description: "Conoce el impacto real de TerraCRM: fondos recaudados, proyectos activos y métricas de conservación.",
+  openGraph: {
+    title: "🌿 Transparencia Total | TerraCRM",
+    description: "El 88% de cada donación va directo a conservación. Ver el impacto real.",
+    type: "website",
+  },
+};
+
 // ISR: Cacheamos esta página y la regeneramos en background cada 1 hora (3600 segundos)
 export const revalidate = 3600;
 

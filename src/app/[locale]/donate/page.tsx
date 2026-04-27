@@ -1,5 +1,16 @@
 import { getTranslations } from "next-intl/server";
 import { processDonationAction } from "./actions";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Donar — TerraCRM",
+  description: "Apoya la conservación ambiental. Tu donación protege ecosistemas.",
+  openGraph: {
+    title: "Apoya Nuestra Causa 🌿",
+    description: "El 88% de tu donación va directo a conservación. Únete al cambio.",
+    type: "website",
+  },
+};
 
 export default async function DonatePage({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations("Navigation"); // Usando diccionarios para el test, ideal un "Donate" namespace
@@ -18,12 +29,12 @@ export default async function DonatePage({ params: { locale } }: { params: { loc
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
-              <input type="text" name="donorName" required className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="Jane Doe" />
+              <input type="text" name="donorName" required className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors min-h-[44px]" placeholder="Jane Doe" />
             </div>
             
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
-              <input type="email" name="donorEmail" required className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="jane@example.com" />
+              <input type="email" name="donorEmail" required className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors min-h-[44px]" placeholder="jane@example.com" />
             </div>
 
             <div>
@@ -31,7 +42,7 @@ export default async function DonatePage({ params: { locale } }: { params: { loc
               <div className="grid grid-cols-3 gap-3 mb-3">
                 {/* Opciones predefinidas con algo de JS de UI si fuera un Client Component, pero aquí usamos HTML forms */}
               </div>
-              <input type="number" name="amount" required min="5" className="w-full px-4 py-2 text-xl font-bold border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="100" />
+              <input type="number" name="amount" required min="5" className="w-full px-4 py-3 text-xl font-bold border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors min-h-[44px]" placeholder="100" />
             </div>
           </div>
           

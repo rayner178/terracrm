@@ -38,7 +38,7 @@ export default async function DashboardPage() {
         <h2 className="text-3xl font-bold tracking-tight text-slate-800">Resumen General</h2>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium text-slate-600">Voluntarios Registrados</CardTitle>
@@ -81,8 +81,8 @@ export default async function DashboardPage() {
         </Card>
       </div>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-6">
-        <Card className="col-span-4">
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 mt-6">
+        <Card className="lg:col-span-4">
           <CardHeader>
             <CardTitle>Últimos Proyectos</CardTitle>
           </CardHeader>
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
              </div>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Últimas Donaciones</CardTitle>
           </CardHeader>
