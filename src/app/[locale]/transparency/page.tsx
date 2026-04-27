@@ -6,9 +6,24 @@ import DynamicProjectMap from "@/components/maps/DynamicProjectMap";
 // ISR: Cacheamos esta página y la regeneramos en background cada 1 hora (3600 segundos)
 export const revalidate = 3600;
 
+interface ImpactMetric {
+  id: string;
+  name: string;
+  totalValue: number;
+  unit: string;
+  description?: string;
+}
+
+interface TransparencyData {
+  totalRaised: number;
+  donationsCount: number;
+  projectsCount: number;
+  impact: ImpactMetric[];
+}
+
 export default async function TransparencyPage() {
   // try/catch — si Prisma falla, muestra métricas en cero pero NO se cae
-  let data: any = { totalRaised: 0, donationsCount: 0, projectsCount: 0, impact: [] };
+  let data: TransparencyData = { totalRaised: 0, donationsCount: 0, projectsCount: 0, impact: [] };
   let projectsGIS: any[] = [];
 
   try {
