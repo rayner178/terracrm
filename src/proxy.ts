@@ -22,7 +22,13 @@ export async function proxy(req: NextRequest) {
 
   if (!isAuthRoute) {
     // Comprobar token para mustChangePassword solo en rutas protegidas
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "supersecret123" });
+    let token = null;
+    try {
+      token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "supersecret123" });
+    } catch (e) {
+      // Token corrupto → tratar como no autenticado, continuar sin redirigir
+      console.error("[Proxy] getToken error:", e);
+    }
     if (token && token.mustChangePassword) {
       return NextResponse.redirect(new URL('/es/change-password', req.url));
     }

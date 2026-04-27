@@ -17,7 +17,12 @@ export default async function RootLayout(props: Readonly<{
 }>) {
   const { children } = props;
   const { locale } = await props.params;
-  const messages = await getMessages();
+  let messages = {};
+  try {
+    messages = await getMessages();
+  } catch (e) {
+    console.error("[Layout] Error loading messages:", e);
+  }
 
   return (
     <html lang={locale}>

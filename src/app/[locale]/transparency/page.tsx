@@ -7,8 +7,18 @@ import DynamicProjectMap from "@/components/maps/DynamicProjectMap";
 export const revalidate = 3600;
 
 export default async function TransparencyPage() {
-  const data = await container.getPublicTransparencyDataUseCase.execute();
-  const projectsGIS = await container.getProjectsGISUseCase.execute();
+  // try/catch — si Prisma falla, muestra métricas en cero pero NO se cae
+  let data: any = { totalRaised: 0, donationsCount: 0, projectsCount: 0, impact: [] };
+  let projectsGIS: any[] = [];
+
+  try {
+    [data, projectsGIS] = await Promise.all([
+      container.getPublicTransparencyDataUseCase.execute(),
+      container.getProjectsGISUseCase.execute(),
+    ]);
+  } catch (e) {
+    console.error("[Transparency] Error loading data:", e);
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
