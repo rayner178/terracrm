@@ -21,8 +21,14 @@ TerraCRM es una plataforma SaaS B2B Multi-tenant diseñada específicamente para
 ### Fase 3: SaaS Multi-Tenancy Regional
 - **Aislamiento**: PostgreSQL con esquemas aislados por tenant (`tenant_fundemar`, `tenant_cebse`).
 - **PWA Offline**: Aplicación offline-first con **IndexedDB** para trabajo de campo sin internet.
-- **GIS**: Almacenamiento geoespacial con **PostGIS** y visualización con **React-Leaflet**.
 - **Integraciones**: Webhooks HMAC para **KoboToolbox** y API REST pública con rate limiting via **Upstash Redis**.
+- **GIS**: Almacenamiento geoespacial con **PostGIS** y visualización con **React-Leaflet**.
+
+### Fase 4: Resiliencia y Hardening (Producción 2026)
+- **Auto-recuperación**: Implementación de **Global Error Boundaries** en Next.js para evitar pantallas blancas.
+- **Degradación Elegante**: Manejo defensivo con `try/catch` en Prisma y NextAuth (fallbacks automáticos a estados seguros).
+- **Mobile First**: Rediseño completo para dispositivos móviles con Sidebar Drawer, grids auto-ajustables y touch targets de mín. 44px.
+- **i18n Avanzado**: Cobertura del 100% en español e inglés con metadatos dinámicos (SEO local) y detección de Caps Lock en formularios.
 
 ## 🔐 Seguridad Implementada
 
@@ -35,7 +41,11 @@ TerraCRM es una plataforma SaaS B2B Multi-tenant diseñada específicamente para
 | **Zod Validation** | Contraseñas: mín. 8 chars + mayúscula + número |
 | **MIME Validation** | Helper `validateFile.ts` para subidas: JPEG, PNG, WEBP, PDF (máx. 5MB) |
 | **JWT Invalidation** | `signOut()` forzado al cambiar contraseña para limpiar token viejo |
+| **Password Visibility** | Toggle de visualización de contraseña en Login y Cambio de Password |
 | **NextAuth Rate Guard** | Wrapper en `POST /api/auth/[...nextauth]` protege callback de credenciales |
+| **Resiliencia de Datos** | Fallbacks en queries de Prisma (try/catch) para evitar crash ante schemas faltantes |
+| **Caps Lock Detection** | Aviso visual en tiempo real para evitar bloqueos por errores de digitación |
+| **Error Boundaries** | Intercepción global de errores 500 y 404 con botones de recuperación automática |
 
 Consulta la política completa en [`docs/SECURITY.md`](./docs/SECURITY.md).
 
