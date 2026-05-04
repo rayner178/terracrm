@@ -7,7 +7,8 @@
     "reports": "Reports",
     "donate": "Donate",
     "impact": "Ecological Impact",
-    "audit": "Audit Log"
+    "audit": "Audit Log",
+    "import": "Import Data"
   },
   "Common": {
     "search": "Search...",

@@ -1,7 +1,7 @@
 "use client";
 
 import { Link, usePathname } from "@/i18n/routing";
-import { Users, Briefcase, DollarSign, FileText, Home, Activity, ShieldAlert, X } from "lucide-react";
+import { Users, Briefcase, DollarSign, FileText, Home, Activity, ShieldAlert, X, Upload } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useMobileSidebar } from "./MobileSidebarProvider";
@@ -27,6 +27,7 @@ export function Sidebar({ role }: SidebarProps) {
     { name: t("funding"),    href: "/funding",      icon: DollarSign,  roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
     { name: t("reports"),    href: "/reports",      icon: FileText,    roles: ["SUPER_ADMIN","DIRECTOR","TESORERO","AUDITOR"] },
     { name: t("impact"),     href: "/impact",       icon: Activity,    roles: ["SUPER_ADMIN","DIRECTOR","COORDINADOR","TESORERO","AUDITOR"] },
+    { name: t("import"),     href: "/import",       icon: Upload,      roles: ["SUPER_ADMIN","DIRECTOR"] },
     { name: t("audit"),      href: "/admin/audit",  icon: ShieldAlert, roles: ["SUPER_ADMIN","AUDITOR"] },
   ];
 
