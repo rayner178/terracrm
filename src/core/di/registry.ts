@@ -26,6 +26,8 @@ import { HandleStripeWebhookUseCase } from "@/modules/payments/application/handl
 import { GetInstitutionalReportDataUseCase } from "@/modules/reports/application/getInstitutionalReportDataUseCase";
 import { GetPublicTransparencyDataUseCase } from "@/modules/reports/application/getPublicTransparencyDataUseCase";
 import { GetProjectsGISUseCase } from "@/modules/projects/application/getProjectsGISUseCase";
+import { ParseXlsxUseCase } from "@/modules/imports/application/parseXlsxUseCase";
+import { ImportDataUseCase } from "@/modules/imports/application/importDataUseCase";
 
 class Registry {
   // Singleton Repositories
@@ -103,6 +105,16 @@ class Registry {
   }
   get getProjectsGISUseCase() {
     return new GetProjectsGISUseCase();
+  }
+
+  // Import Module
+  get parseXlsxUseCase() { return new ParseXlsxUseCase(); }
+  get importDataUseCase() {
+    return new ImportDataUseCase(
+      this.volunteerRepository,
+      this.projectRepository,
+      this.donationRepository
+    );
   }
 }
 

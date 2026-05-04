@@ -1,0 +1,92 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: auth.spec.ts >> Authentication Flows >> Caso 1: Login con credenciales válidas redirige al dashboard
+- Location: tests\e2e\auth.spec.ts:15:7
+
+# Error details
+
+```
+Error: expect(page).toHaveURL(expected) failed
+
+Expected pattern: /\/es(\/?$|\/(projects|volunteers|funding|impact|reports|field))/
+Received string:  "http://localhost:3000/es/login"
+Timeout: 10000ms
+
+Call log:
+  - Expect "toHaveURL" with timeout 10000ms
+    13 × unexpected value "http://localhost:3000/es/login"
+
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | import { createTestUser, deleteTestUser } from './utils/db-setup';
+  3  | 
+  4  | test.describe('Authentication Flows', () => {
+  5  |   const testEmail = 'auth_test@tenant.org';
+  6  | 
+  7  |   test.beforeAll(async () => {
+  8  |     await createTestUser(testEmail, 'COORDINADOR');
+  9  |   });
+  10 | 
+  11 |   test.afterAll(async () => {
+  12 |     await deleteTestUser(testEmail);
+  13 |   });
+  14 | 
+  15 |   test('Caso 1: Login con credenciales válidas redirige al dashboard', async ({ page }) => {
+  16 |     await page.goto('/es/login');
+  17 |     await page.fill('input[name="email"]', testEmail);
+  18 |     await page.fill('input[name="password"]', 'password123');
+  19 |     await page.click('button[type="submit"]');
+  20 | 
+  21 |     // App Router route groups like (dashboard) are invisible in the URL — real URL is /es
+> 22 |     await expect(page).toHaveURL(/\/es(\/?$|\/(projects|volunteers|funding|impact|reports|field))/, { timeout: 10000 });
+     |                        ^ Error: expect(page).toHaveURL(expected) failed
+  23 |     // Verify we are on the dashboard by checking a landmark element
+  24 |     await expect(page.locator('text=Resumen General')).toBeVisible({ timeout: 10000 });
+  25 |   });
+  26 | 
+  27 |   test('Caso 2: Login con credenciales inválidas muestra error', async ({ page }) => {
+  28 |     await page.goto('/es/login');
+  29 |     await page.fill('input[name="email"]', testEmail);
+  30 |     await page.fill('input[name="password"]', 'wrongpassword');
+  31 |     await page.click('button[type="submit"]');
+  32 | 
+  33 |     // Error div renders after signIn resolves — wait for it
+  34 |     await expect(page.locator('div.text-red-500')).toBeVisible({ timeout: 8000 });
+  35 |     await expect(page.locator('div.text-red-500')).toContainText('Credenciales inválidas');
+  36 |   });
+  37 | 
+  38 |   test('Caso 3: Usuario bloqueado por rate limiting después de 5 intentos', async ({ page }) => {
+  39 |     test.slow(); // Triplica el timeout — necesario con latencia de Upstash
+  40 |     await page.goto('/es/login');
+  41 | 
+  42 |     // 5 intentos fallidos consecutivos
+  43 |     for (let i = 0; i < 5; i++) {
+  44 |       await page.fill('input[name="email"]', 'ratelimit@test.org');
+  45 |       await page.fill('input[name="password"]', `wrong${i}`);
+  46 |       await page.click('button[type="submit"]');
+  47 |       await page.waitForTimeout(1000);
+  48 |     }
+  49 | 
+  50 |     // 6to intento — debe bloquear (429)
+  51 |     await page.fill('input[name="email"]', 'ratelimit@test.org');
+  52 |     await page.fill('input[name="password"]', 'wrong6');
+  53 |     await page.click('button[type="submit"]');
+  54 | 
+  55 |     // NextAuth convierte el 429 del wrapper en un error en la UI o redirige a /api/auth/error
+  56 |     await expect(
+  57 |       page.locator('div.text-red-500').or(page.locator('text=Too Many Requests')).or(page.locator('text=Error'))
+  58 |     ).toBeVisible({ timeout: 10000 });
+  59 |   });
+  60 | });
+  61 | 
+```
