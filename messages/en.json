@@ -102,5 +102,45 @@
     "submit": "Donate with Card",
     "transparencyLink": "View our Transparency Portal →",
     "stripeNote": "Payments securely processed by Stripe."
+  },
+  "ChangePasswordPage": {
+    "title": "Update your password",
+    "subtitle": "For security reasons, you must change your temporary password before continuing."
+  },
+  "Volunteers": {
+    "title": "Volunteers",
+    "addTitle": "Add New Volunteer",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "skillsLabel": "Skills",
+    "skillsPlaceholder": "E.g.: Design, Biology...",
+    "saveButton": "Save Volunteer",
+    "directoryTitle": "Volunteer Directory",
+    "colName": "Name",
+    "colEmail": "Email",
+    "colSkills": "Skills",
+    "empty": "No volunteers registered yet."
+  },
+  "Projects": {
+    "title": "Projects",
+    "createTitle": "Create New Project",
+    "nameLabel": "Project Name",
+    "descriptionLabel": "Description",
+    "locationLabel": "Location",
+    "statusLabel": "Initial Status",
+    "statusPlanning": "Planning",
+    "statusActive": "Active",
+    "statusCompleted": "Completed",
+    "createButton": "Create Project",
+    "portfolioTitle": "Project Portfolio",
+    "colProject": "Project",
+    "colLocation": "Location",
+    "colStatus": "Status",
+    "colActions": "Actions",
+    "actionStart": "Start",
+    "actionFinish": "Complete",
+    "empty": "No projects registered yet."
   }
 }

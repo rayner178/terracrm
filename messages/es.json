@@ -102,5 +102,45 @@
     "submit": "Donar con Tarjeta",
     "transparencyLink": "Ver nuestro Portal de Transparencia →",
     "stripeNote": "Pagos procesados de forma segura por Stripe."
+  },
+  "ChangePasswordPage": {
+    "title": "Actualiza tu contraseña",
+    "subtitle": "Por razones de seguridad, debes cambiar tu contraseña temporal antes de continuar."
+  },
+  "Volunteers": {
+    "title": "Voluntarios",
+    "addTitle": "Añadir Nuevo Voluntario",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellidos",
+    "emailLabel": "Email",
+    "phoneLabel": "Teléfono",
+    "skillsLabel": "Habilidades",
+    "skillsPlaceholder": "Ej: Diseño, Biología...",
+    "saveButton": "Guardar Voluntario",
+    "directoryTitle": "Directorio de Voluntarios",
+    "colName": "Nombre",
+    "colEmail": "Email",
+    "colSkills": "Habilidades",
+    "empty": "No hay voluntarios registrados aún."
+  },
+  "Projects": {
+    "title": "Proyectos",
+    "createTitle": "Crear Nuevo Proyecto",
+    "nameLabel": "Nombre del Proyecto",
+    "descriptionLabel": "Descripción",
+    "locationLabel": "Ubicación",
+    "statusLabel": "Estado Inicial",
+    "statusPlanning": "En Planificación",
+    "statusActive": "Activo",
+    "statusCompleted": "Completado",
+    "createButton": "Crear Proyecto",
+    "portfolioTitle": "Portafolio de Proyectos",
+    "colProject": "Proyecto",
+    "colLocation": "Ubicación",
+    "colStatus": "Estado",
+    "colActions": "Acciones",
+    "actionStart": "Iniciar",
+    "actionFinish": "Finalizar",
+    "empty": "No hay proyectos registrados."
   }
 }
