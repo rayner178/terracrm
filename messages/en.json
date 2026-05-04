@@ -209,5 +209,15 @@
   },
   "ImpactChart": {
     "empty": "No data recorded"
+  },
+  "Reports": {
+    "title": "Institutional Reports",
+    "subtitle": "Consolidated data exports for International NGOs and Audits",
+    "pdfTitle": "Executive Report (PDF)",
+    "pdfDesc": "Visual summary of ecological impact and financial overview. Ideal for presentations and sharing with donors.",
+    "pdfButton": "Download PDF",
+    "excelTitle": "Raw Data (Excel)",
+    "excelDesc": "Full tabular export of finances, project list and metrics. Ideal for audits and data analysis.",
+    "excelButton": "Download Excel (.xlsx)"
   }
 }

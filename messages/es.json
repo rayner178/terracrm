@@ -209,5 +209,15 @@
   },
   "ImpactChart": {
     "empty": "Sin datos registrados"
+  },
+  "Reports": {
+    "title": "Reportes Institucionales",
+    "subtitle": "Exportación de datos consolidados para ONGs Internacionales y Auditorías",
+    "pdfTitle": "Reporte Ejecutivo (PDF)",
+    "pdfDesc": "Resumen visual de impacto ecológico y resumen financiero. Ideal para presentaciones y compartición con donantes.",
+    "pdfButton": "Descargar PDF",
+    "excelTitle": "Datos Crudos (Excel)",
+    "excelDesc": "Exportación tabular completa de finanzas, listado de proyectos y métricas. Ideal para auditorías y análisis de datos.",
+    "excelButton": "Descargar Excel (.xlsx)"
   }
 }
