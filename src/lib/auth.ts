@@ -65,6 +65,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 8 * 60 * 60,    // 8 hours — session expires after 8h of inactivity
+    updateAge: 60 * 60,     // 1 hour  — JWT refreshed every hour for active sessions
   },
   pages: {
     signIn: "/es/login",
