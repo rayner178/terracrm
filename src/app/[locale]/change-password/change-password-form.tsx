@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
+import { useLocale, useTranslations } from "next-intl";
 import { Eye, EyeOff } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 export function ChangePasswordForm() {
   const t = useTranslations("ChangePassword");
+  const tCommon = useTranslations("Common");
+  const locale = useLocale();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,10 +29,10 @@ export function ChangePasswordForm() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Error al cambiar contraseña");
+        throw new Error(data.error || tCommon("errorGeneric"));
       }
 
-      await signOut({ callbackUrl: "/es/login" });
+      await signOut({ callbackUrl: `/${locale}/login` });
     } catch (err: any) {
       setError(err.message);
       setLoading(false);

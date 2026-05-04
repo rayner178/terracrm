@@ -3,11 +3,12 @@
 import { Bell, Search, LogOut, Menu } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMobileSidebar } from "./MobileSidebarProvider";
 
 export function Header() {
   const t = useTranslations("Common");
+  const locale = useLocale();
   const { open } = useMobileSidebar();
 
   return (
@@ -17,7 +18,7 @@ export function Header() {
         <button
           onClick={open}
           className="md:hidden p-2 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label="Abrir menú"
+          aria-label={t("openMenu")}
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -42,7 +43,7 @@ export function Header() {
           A
         </div>
         <button
-          onClick={() => signOut({ callbackUrl: "/es/login" })}
+          onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
           className="text-slate-400 hover:text-rose-600 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
           title={t("logout")}
         >

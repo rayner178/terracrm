@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
@@ -11,6 +12,7 @@ import { useTranslations } from "next-intl";
 export function LoginForm() {
   const t = useTranslations("Login");
   const router = useRouter();
+  const locale = useLocale();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -36,9 +38,9 @@ export function LoginForm() {
       setLoading(false);
     } else {
       if ((res as any)?.mustChangePassword) {
-        router.push("/es/change-password");
+        router.push(`/${locale}/change-password`);
       } else {
-        router.push("/es");
+        router.push(`/${locale}`);
       }
       router.refresh();
     }

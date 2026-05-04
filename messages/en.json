@@ -12,7 +12,10 @@
   },
   "Common": {
     "search": "Search...",
-    "logout": "Logout"
+    "logout": "Logout",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "errorGeneric": "Failed to change password"
   },
   "Impact": {
     "title": "Ecological Impact Metrics",

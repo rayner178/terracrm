@@ -12,6 +12,7 @@ interface SidebarProps {
 
 export function Sidebar({ role }: SidebarProps) {
   const t = useTranslations("Navigation");
+  const tCommon = useTranslations("Common");
   const { isOpen, close } = useMobileSidebar();
   const pathname = usePathname();
 
@@ -40,7 +41,7 @@ export function Sidebar({ role }: SidebarProps) {
         <button
           onClick={close}
           className="md:hidden text-slate-400 hover:text-white transition-colors p-1"
-          aria-label="Cerrar menú"
+          aria-label={tCommon("closeMenu")}
         >
           <X className="w-5 h-5" />
         </button>

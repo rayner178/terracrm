@@ -12,7 +12,10 @@
   },
   "Common": {
     "search": "Buscar...",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "errorGeneric": "Error al cambiar contraseña"
   },
   "Impact": {
     "title": "Métricas de Impacto Ecológico",
