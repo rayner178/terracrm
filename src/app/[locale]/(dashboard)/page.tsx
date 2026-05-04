@@ -4,26 +4,29 @@ import { container } from "@/core/di/registry";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export default async function DashboardPage() {
   const t = await getTranslations("Dashboard");
-  const session = await getServerSession(authOptions);
+  const [session, locale] = await Promise.all([
+    getServerSession(authOptions),
+    getLocale(),
+  ]);
   if (!session) {
-    redirect('/es/login');
+    redirect(`/${locale}/login`);
   }
 
-  // Wrap queries in try/catch — if tenant schema is missing, show empty dashboard
-  // instead of crashing the server with a 500
+  // Use use cases (not raw repos) so tenant context is resolved
+  // correctly from Next.js request headers on every render.
   let volunteersResult: { data: any[]; total: number } = { data: [], total: 0 };
   let projects: any[] = [];
   let donations: any[] = [];
 
   try {
     [volunteersResult, projects, donations] = await Promise.all([
-      container.volunteerRepository.getAll(1, 10),
-      container.projectRepository.getAll(),
-      container.donationRepository.getAll(),
+      container.getVolunteersUseCase.execute(1, 9999),
+      container.getProjectsUseCase.execute(),
+      container.getDonationsUseCase.execute(),
     ]);
   } catch (e) {
     console.error("[Dashboard] Error loading tenant data:", e);
@@ -31,8 +34,8 @@ export default async function DashboardPage() {
   }
 
   const volunteersCount = volunteersResult.total;
-  const activeProjects = projects.filter(p => p.status !== "COMPLETED").length;
-  const totalFunds = donations.reduce((sum, d) => sum + d.amount, 0);
+  const activeProjects  = projects.filter((p: any) => p.status !== "COMPLETED").length;
+  const totalFunds      = donations.reduce((sum: number, d: any) => sum + (d.amount ?? 0), 0);
 
   return (
     <div className="space-y-6">
