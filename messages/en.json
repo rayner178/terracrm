@@ -219,5 +219,11 @@
     "excelTitle": "Raw Data (Excel)",
     "excelDesc": "Full tabular export of finances, project list and metrics. Ideal for audits and data analysis.",
     "excelButton": "Download Excel (.xlsx)"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "subtitle": "The page you're looking for doesn't exist or was moved.",
+    "goLogin": "Go to Login",
+    "goPublic": "Public Portal"
   }
 }

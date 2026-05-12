@@ -1,3 +1,5 @@
+// Fallback 404 for routes outside [locale] (e.g. /api/unknown-route).
+// No next-intl context available here — static English only.
 import Link from "next/link";
 
 export default function NotFound() {
@@ -29,44 +31,26 @@ export default function NotFound() {
           404
         </h1>
         <p style={{ color: "#475569", fontWeight: 600, fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-          Página no encontrada
+          Page not found
         </p>
         <p style={{ color: "#94a3b8", fontSize: "0.9rem", marginBottom: "2rem" }}>
-          La ruta que buscas no existe o fue movida. 
-          Usa los botones de abajo para volver al sistema.
+          The page you&apos;re looking for doesn&apos;t exist or was moved.
         </p>
-        <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <Link
-            href="/es/login"
-            style={{
-              background: "#059669",
-              color: "white",
-              textDecoration: "none",
-              borderRadius: "0.5rem",
-              padding: "0.6rem 1.5rem",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              display: "inline-block",
-            }}
-          >
-            Ir al Login
-          </Link>
-          <Link
-            href="/es/transparency"
-            style={{
-              background: "#f1f5f9",
-              color: "#475569",
-              textDecoration: "none",
-              borderRadius: "0.5rem",
-              padding: "0.6rem 1.5rem",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              display: "inline-block",
-            }}
-          >
-            Portal Público
-          </Link>
-        </div>
+        <Link
+          href="/"
+          style={{
+            background: "#059669",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "0.5rem",
+            padding: "0.6rem 1.5rem",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+            display: "inline-block",
+          }}
+        >
+          Go to Home
+        </Link>
       </div>
     </div>
   );

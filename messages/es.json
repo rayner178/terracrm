@@ -219,5 +219,11 @@
     "excelTitle": "Datos Crudos (Excel)",
     "excelDesc": "Exportación tabular completa de finanzas, listado de proyectos y métricas. Ideal para auditorías y análisis de datos.",
     "excelButton": "Descargar Excel (.xlsx)"
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "subtitle": "La página que buscas no existe o fue movida.",
+    "goLogin": "Ir al Login",
+    "goPublic": "Portal Público"
   }
 }
