@@ -10,7 +10,7 @@ TerraCRM es una plataforma SaaS B2B Multi-tenant diseñada específicamente para
 ## 🚀 Fases Completadas (Arquitectura Resumida)
 
 ### Fase 1: MVP Monolito
-- **Módulos**: Gestión de Voluntariado, Ciclo de Vida de Proyectos y Control de Donaciones.
+- **Módulos**: Gestión de Aliados, Ciclo de Vida de Proyectos y Control de Donaciones.
 - **Seguridad Básica**: Autenticación con NextAuth y registro de usuarios.
 
 ### Fase 2: Escalamiento Operativo e Impacto
@@ -29,6 +29,15 @@ TerraCRM es una plataforma SaaS B2B Multi-tenant diseñada específicamente para
 - **Degradación Elegante**: Manejo defensivo con `try/catch` en Prisma y NextAuth (fallbacks automáticos a estados seguros).
 - **Mobile First**: Rediseño completo para dispositivos móviles con Sidebar Drawer, grids auto-ajustables y touch targets de mín. 44px.
 - **i18n Avanzado**: Cobertura del 100% en español e inglés con metadatos dinámicos (SEO local) y detección de Caps Lock en formularios.
+- **Importación Masiva**: Módulo de carga batch desde `.xlsx` (Aliados, Proyectos, Donaciones) con validación Zod fila por fila y wizard de 3 pasos.
+
+### Módulo de Importación Masiva
+- Importación de Aliados, Proyectos y Donaciones históricas desde archivos `.xlsx`
+- Wizard de 3 pasos: subir → previsualizar → confirmar
+- Validación fila por fila con Zod — los errores no detienen la importación
+- Preview de las primeras 5 filas con indicadores visuales de errores
+- Reporte final: registros importados vs fallidos con detalle
+- Accesible en `/import` para roles `SUPER_ADMIN` y `DIRECTOR`
 
 ## 🔐 Seguridad Implementada
 
@@ -112,6 +121,39 @@ Esto crea el schema `tenant_{slug}`, clona las tablas y genera un admin inicial 
 
 API REST pública disponible en:
 **[https://terracrm-ten.vercel.app/api/docs](https://terracrm-ten.vercel.app/api/docs)**
+
+## 🗺️ Roadmap v2.0 — Basado en feedback operativo de FUNDEMAR
+
+### Proyectos — Estructura financiera y operativa
+- Campos: presupuesto total, fondos asignados, gastado, balance, % ejecutado
+- Fechas de inicio y fin con duración restante
+- Entregables/Hitos por proyecto con fecha límite y estado
+- KPIs de impacto por proyecto (hectáreas, especies, beneficiarios)
+- Barra de progreso financiera con alertas si supera presupuesto
+- **Vista de proyecto**: al tocar un proyecto, ver todos sus datos relacionados (donaciones asignadas, aliados participantes, métricas de impacto, entregables) en una sola pantalla con gráficos integrados
+
+### Finanzas — Separación Donaciones vs Fondos
+- **Donaciones**: aportes libres de personas, campañas, Stripe, empresas
+- **Grants/Fondos**: dinero restringido por proyecto de USAID, GEF, ONU, BID
+- Dashboard financiero: total donaciones reales, grants activos, fondos comprometidos, burn rate mensual
+
+### Aliados — Módulo expandido (renombrado desde Voluntarios)
+- Tipos: Voluntario, Técnico/Consultor, Organización aliada, Líder comunitario, Cooperante internacional
+- Vinculación a proyectos con roles y horas trabajadas
+- Certificados de participación automáticos
+- Centro de Comunidad: vista unificada de todos los aliados por proyecto
+
+### Reportes Institucionales — Nuevas pestañas
+- Financiero: ingresos vs gastos, ejecución presupuestaria, grants activos
+- Recursos: aliados activos, horas acumuladas, rendimiento operativo
+- KPI Ejecutivo: dashboard estilo CEO con tasa de ejecución y crecimiento
+- Reportes para Donantes: PDFs automáticos con impacto, fotos y métricas
+
+### Nuevos módulos planificados
+- Calendario institucional: actividades, entregables, vencimientos, auditorías
+- Gestión documental: contratos, convenios, permisos, evidencias fotográficas
+- CRM de aliados/donantes: historial completo de organizaciones y donantes recurrentes
+- Automatizaciones: alertas de presupuesto bajo, recordatorios de entregables, certificados para aliados
 
 ---
 *Hecho con tecnología y propósito para la conservación de la biodiversidad. 🌿*
