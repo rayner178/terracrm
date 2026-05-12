@@ -17,11 +17,17 @@ export class CreateDonationUseCase {
       throw new ValidationError("Datos de donación inválidos", parsed.error.flatten().fieldErrors);
     }
     return await this.donationRepository.create({
-      donorName: parsed.data.donorName,
-      amount: parsed.data.amount,
-      projectId: parsed.data.projectId || undefined,
-      locale: "es", // Default for manual entries
-      isRecurring: false,
+      donorName:    parsed.data.donorName,
+      amount:       parsed.data.amount,
+      projectId:    parsed.data.projectId || undefined,
+      locale:       "es",
+      isRecurring:  false,
+      type:         "DONATION",
+      donorEmail:   null,
+      notes:        null,
+      currency:     "USD",
+      isRestricted: false,
+      funderOrg:    null,
     });
   }
 }

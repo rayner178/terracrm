@@ -47,8 +47,14 @@ export class HandleStripeWebhookUseCase {
         amount,
         locale,
         stripeSessionId,
-        isRecurring: session.mode === "subscription",
-        projectId: projectId && projectId.trim() !== "" ? projectId : undefined,
+        isRecurring:  session.mode === "subscription",
+        projectId:    projectId && projectId.trim() !== "" ? projectId : undefined,
+        type:         "DONATION",
+        donorEmail:   donorEmail || null,
+        notes:        null,
+        currency:     "USD",
+        isRestricted: false,
+        funderOrg:    null,
       });
 
       // 4. Enviar email localizado vía Resend

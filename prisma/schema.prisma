@@ -36,12 +36,28 @@ model Project {
   ecosystemType String?  // MARINO, TERRESTRE, HUMEDAL
   geom          Unsupported("geometry")?
   status        String   @default("PLANNING") // PLANNING, ACTIVE, COMPLETED
+  budget        Float?
+  spent         Float?
+  startDate     DateTime?
+  endDate       DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  assignments ProjectAssignment[]
-  donations   Donation[]
+  assignments   ProjectAssignment[]
+  donations     Donation[]
   metricRecords MetricRecord[]
+  milestones    Milestone[]
+}
+
+model Milestone {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      String    @default("PENDING") // PENDING | COMPLETED
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
 }
 
 model ProjectAssignment {
@@ -84,6 +100,12 @@ model Donation {
   locale          String   @default("es")
   stripeSessionId String?
   isRecurring     Boolean  @default(false)
+  type            String   @default("DONATION") // DONATION | GRANT
+  donorEmail      String?
+  notes           String?
+  currency        String   @default("USD")
+  isRestricted    Boolean  @default(false)
+  funderOrg       String?
 }
 
 model MetricDefinition {

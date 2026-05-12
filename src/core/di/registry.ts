@@ -5,6 +5,11 @@ import { CreateVolunteerUseCase } from "@/modules/volunteers/application/createV
 import { PrismaProjectRepository } from "@/modules/projects/infrastructure/prismaProjectRepository";
 import { GetProjectsUseCase } from "@/modules/projects/application/getProjectsUseCase";
 import { CreateProjectUseCase } from "@/modules/projects/application/createProjectUseCase";
+import { GetProjectByIdUseCase } from "@/modules/projects/application/getProjectByIdUseCase";
+import { CreateMilestoneUseCase } from "@/modules/projects/application/createMilestoneUseCase";
+import { ToggleMilestoneUseCase } from "@/modules/projects/application/toggleMilestoneUseCase";
+import { DeleteMilestoneUseCase } from "@/modules/projects/application/deleteMilestoneUseCase";
+import { PrismaMilestoneRepository } from "@/modules/projects/infrastructure/prismaMilestoneRepository";
 
 import { PrismaDonationRepository } from "@/modules/funding/infrastructure/prismaDonationRepository";
 import { GetDonationsUseCase } from "@/modules/funding/application/getDonationsUseCase";
@@ -30,12 +35,13 @@ import { ParseXlsxUseCase } from "@/modules/imports/application/parseXlsxUseCase
 import { ImportDataUseCase } from "@/modules/imports/application/importDataUseCase";
 
 class Registry {
-  // Singleton Repositories
+  // Repositories
   private _volunteerRepo?: PrismaVolunteerRepository;
   private _projectRepo?: PrismaProjectRepository;
   private _donationRepo?: PrismaDonationRepository;
   private _auditLogRepo?: PrismaAuditLogRepository;
   private _impactRepo?: PrismaImpactRepository;
+  private _milestoneRepo?: PrismaMilestoneRepository;
 
   // Volunteer Module
   get volunteerRepository() {
@@ -52,6 +58,16 @@ class Registry {
   }
   get getProjectsUseCase() { return new GetProjectsUseCase(this.projectRepository); }
   get createProjectUseCase() { return new CreateProjectUseCase(this.projectRepository); }
+  get getProjectByIdUseCase() { return new GetProjectByIdUseCase(this.projectRepository); }
+
+  // Milestone Module
+  get milestoneRepository() {
+    if (!this._milestoneRepo) this._milestoneRepo = new PrismaMilestoneRepository();
+    return this._milestoneRepo;
+  }
+  get createMilestoneUseCase() { return new CreateMilestoneUseCase(this.milestoneRepository); }
+  get toggleMilestoneUseCase() { return new ToggleMilestoneUseCase(this.milestoneRepository); }
+  get deleteMilestoneUseCase() { return new DeleteMilestoneUseCase(this.milestoneRepository); }
 
   // Funding Module
   get donationRepository() {

@@ -2,15 +2,20 @@ import { Project as PrismaProject } from "@prisma/client";
 import { Project } from "../domain/Project";
 
 export class ProjectMapper {
-  static toDomain(prismaProject: PrismaProject): Project {
+  static toDomain(p: PrismaProject): Project {
     return {
-      id: prismaProject.id,
-      name: prismaProject.name,
-      description: prismaProject.description,
-      location: prismaProject.location,
-      status: prismaProject.status,
-      createdAt: prismaProject.createdAt,
-      updatedAt: prismaProject.updatedAt,
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      location: p.location,
+      ecosystemType: p.ecosystemType,
+      status: p.status,
+      budget: p.budget,
+      spent: p.spent,
+      startDate: p.startDate,
+      endDate: p.endDate,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
     };
   }
 }

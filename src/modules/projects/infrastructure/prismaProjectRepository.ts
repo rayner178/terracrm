@@ -1,5 +1,5 @@
 import { prisma } from "@/infrastructure/database/prisma";
-import { IProjectRepository, Project } from "../domain/Project";
+import { IProjectRepository, Project, ProjectDetail } from "../domain/Project";
 import { ProjectMapper } from "./ProjectMapper";
 
 export class PrismaProjectRepository implements IProjectRepository {
@@ -10,10 +10,31 @@ export class PrismaProjectRepository implements IProjectRepository {
     return projects.map(ProjectMapper.toDomain);
   }
 
-  async create(data: Omit<Project, "id" | "createdAt" | "updatedAt">): Promise<Project> {
-    const project = await prisma.project.create({
-      data,
+  async getById(id: string): Promise<ProjectDetail | null> {
+    const project = await prisma.project.findUnique({
+      where: { id },
+      include: {
+        assignments: {
+          include: { volunteer: true },
+        },
+        donations: {
+          orderBy: { date: "desc" },
+        },
+        metricRecords: {
+          include: { metric: true },
+          orderBy: { date: "asc" },
+        },
+        milestones: {
+          orderBy: { createdAt: "asc" },
+        },
+      },
     });
+    if (!project) return null;
+    return project as unknown as ProjectDetail;
+  }
+
+  async create(data: Omit<Project, "id" | "createdAt" | "updatedAt">): Promise<Project> {
+    const project = await prisma.project.create({ data });
     return ProjectMapper.toDomain(project);
   }
 

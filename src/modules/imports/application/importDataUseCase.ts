@@ -94,22 +94,33 @@ export class ImportDataUseCase {
       case "projects": {
         const d = data as ProjectImportRow;
         await this.projectRepo.create({
-          name:        d.nombre,
-          description: d.descripcion ?? null,
-          location:    d.ubicacion ?? null,
-          status:      d.estado,
+          name:         d.nombre,
+          description:  d.descripcion ?? null,
+          location:     d.ubicacion ?? null,
+          ecosystemType: null,
+          status:       d.estado,
+          budget:       null,
+          spent:        null,
+          startDate:    null,
+          endDate:      null,
         });
         break;
       }
       case "donations": {
         const d = data as DonationImportRow;
         await this.donationRepo.create({
-          donorName:      d.nombre_donante,
-          amount:         d.monto,
-          locale:         "es",          // importación histórica usa locale base
-          isRecurring:    false,
+          donorName:       d.nombre_donante,
+          amount:          d.monto,
+          locale:          "es",
+          isRecurring:     false,
           stripeSessionId: null,
-          projectId:      undefined,
+          projectId:       undefined,
+          type:            "DONATION",
+          donorEmail:      null,
+          notes:           null,
+          currency:        "USD",
+          isRestricted:    false,
+          funderOrg:       null,
         });
         break;
       }

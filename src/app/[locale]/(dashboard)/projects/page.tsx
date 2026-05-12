@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
+import Link from "next/link";
 import { fetchProjects, createProjectAction, updateProjectStatusAction } from "./actions";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default async function ProjectsPage() {
-  const t = await getTranslations("Projects");
-  const projects = await fetchProjects();
+  const [t, locale, projects] = await Promise.all([
+    getTranslations("Projects"),
+    getLocale(),
+    fetchProjects(),
+  ]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -50,6 +54,20 @@ export default async function ProjectsPage() {
                   <option value="COMPLETED">{t("statusCompleted")}</option>
                 </select>
               </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Presupuesto ($)</label>
+                <Input name="budget" type="number" step="0.01" min="0" placeholder="Opcional" className="bg-slate-50" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Inicio</label>
+                  <Input name="startDate" type="date" className="bg-slate-50" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Fin</label>
+                  <Input name="endDate" type="date" className="bg-slate-50" />
+                </div>
+              </div>
               <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                 {t("createButton")}
               </Button>
@@ -82,8 +100,15 @@ export default async function ProjectsPage() {
                   )}
                   {projects.map((proj) => (
                     <TableRow key={proj.id}>
-                      <TableCell className="font-medium text-slate-800">{proj.name}</TableCell>
-                      <TableCell className="text-slate-600">{proj.location || "-"}</TableCell>
+                      <TableCell className="font-medium">
+                        <Link
+                          href={`/${locale}/projects/${proj.id}`}
+                          className="text-slate-800 hover:text-emerald-600 transition-colors hover:underline"
+                        >
+                          {proj.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="text-slate-600">{proj.location || "—"}</TableCell>
                       <TableCell>{getStatusBadge(proj.status)}</TableCell>
                       <TableCell>
                         <form action={updateProjectStatusAction} className="flex gap-2">
