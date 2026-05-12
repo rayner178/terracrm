@@ -14,6 +14,8 @@ import { PrismaMilestoneRepository } from "@/modules/projects/infrastructure/pri
 import { PrismaDonationRepository } from "@/modules/funding/infrastructure/prismaDonationRepository";
 import { GetDonationsUseCase } from "@/modules/funding/application/getDonationsUseCase";
 import { CreateDonationUseCase } from "@/modules/funding/application/createDonationUseCase";
+import { GetGrantsUseCase } from "@/modules/funding/application/getGrantsUseCase";
+import { CreateGrantUseCase } from "@/modules/funding/application/createGrantUseCase";
 
 import { GetGeneralImpactUseCase } from "@/modules/reports/application/getGeneralImpactUseCase";
 
@@ -76,6 +78,8 @@ class Registry {
   }
   get getDonationsUseCase() { return new GetDonationsUseCase(this.donationRepository); }
   get createDonationUseCase() { return new CreateDonationUseCase(this.donationRepository); }
+  get getGrantsUseCase() { return new GetGrantsUseCase(this.donationRepository); }
+  get createGrantUseCase() { return new CreateGrantUseCase(this.donationRepository); }
 
   // Reports Module
   get getGeneralImpactUseCase() {

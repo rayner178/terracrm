@@ -158,7 +158,18 @@
     "colProject": "Project",
     "colAmount": "Amount",
     "generalLabel": "General",
-    "empty": "No donations recorded yet."
+    "empty": "No donations recorded yet.",
+    "typeDonation": "Donations",
+    "typeGrant": "Institutional Grants",
+    "grantsTitle": "Grants / Institutional Funds",
+    "grantsTotal": "Total Grants",
+    "donationsTotal": "Total Donations",
+    "funderOrgLabel": "Funding Organization",
+    "notesLabel": "Notes",
+    "isRestrictedLabel": "Restricted to project",
+    "registerGrantButton": "Register Grant",
+    "colType": "Type",
+    "colFunder": "Funder"
   },
   "Import": {
     "pageTitle": "Import Data",

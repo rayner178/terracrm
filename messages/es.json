@@ -158,7 +158,18 @@
     "colProject": "Proyecto",
     "colAmount": "Monto",
     "generalLabel": "General",
-    "empty": "No hay donaciones registradas aún."
+    "empty": "No hay donaciones registradas aún.",
+    "typeDonation": "Donaciones",
+    "typeGrant": "Grants Institucionales",
+    "grantsTitle": "Grants / Fondos Institucionales",
+    "grantsTotal": "Total Grants",
+    "donationsTotal": "Total Donaciones",
+    "funderOrgLabel": "Organización Financiadora",
+    "notesLabel": "Notas",
+    "isRestrictedLabel": "Restringido por proyecto",
+    "registerGrantButton": "Registrar Grant",
+    "colType": "Tipo",
+    "colFunder": "Financiadora"
   },
   "Import": {
     "pageTitle": "Importar Datos",
