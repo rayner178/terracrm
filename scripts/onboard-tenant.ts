@@ -12,67 +12,114 @@ async function main() {
     process.exit(1);
   }
 
+  const schemaName = `tenant_${slug}`;
   console.log(`Onboarding tenant: ${name} (${slug})...`);
 
   // 1. Crear el registro en public.Tenant
   await prisma.tenant.upsert({
-    where: { slug },
+    where:  { slug },
     update: { name },
     create: { slug, name, domain: `${slug}.terracrm.org` },
   });
 
   // 2. Crear el schema del tenant en Postgres y habilitar PostGIS
   await prisma.$executeRawUnsafe(`CREATE EXTENSION IF NOT EXISTS postgis SCHEMA public;`);
-  
-  const schemaName = `tenant_${slug}`;
   await prisma.$executeRawUnsafe(`CREATE SCHEMA IF NOT EXISTS "${schemaName}";`);
 
   console.log(`Schema ${schemaName} creado. Clonando tablas de public...`);
 
-  // 3. Clonar la estructura de las tablas desde public
-  // Las tablas que son privadas al tenant. (Excluimos User, Tenant, AuditLog - si el AuditLog es global, pero lo mantendremos por tenant)
-  // Como Prisma crea todo en public, lo usamos de template.
+  // 3. Clonar la estructura de las tablas desde public.
+  //    Orden importa: Project antes de Milestone (FK).
   const tablesToClone = [
-    "Volunteer", 
-    "Project", 
-    "ProjectVolunteer", 
-    "Donation", 
-    "MetricDefinition", 
-    "MetricRecord", 
+    "Volunteer",
+    "Project",
+    "ProjectAssignment",
+    "Donation",
+    "MetricDefinition",
+    "MetricRecord",
     "AuditLog",
-    "KoboFormMapping"
+    "KoboFormMapping",
+    "Milestone",          // v2.0 — debe ir después de Project (FK)
   ];
 
   for (const table of tablesToClone) {
     try {
-      // LIKE copia la estructura, CONSTRAINTS copia llaves foráneas/índices
       await prisma.$executeRawUnsafe(`
         CREATE TABLE IF NOT EXISTS "${schemaName}"."${table}" (
           LIKE public."${table}" INCLUDING ALL
         );
       `);
+      console.log(`  ✓ ${table}`);
     } catch (error) {
-      console.log(`Nota: Posible error clonando ${table} (tal vez ya existe)`);
+      console.log(`  ~ ${table}: ya existe o error menor (continuando)`);
     }
   }
 
-  // 4. Crear Super Admin Inicial (User es global, pero le damos rol SUPER_ADMIN)
+  // 4. Redirigir FK Milestone → Project al schema del tenant
+  //    LIKE INCLUDING ALL copia FKs apuntando a public; las redefinimos.
+  try {
+    await prisma.$executeRawUnsafe(
+      `ALTER TABLE "${schemaName}"."Milestone" DROP CONSTRAINT IF EXISTS "Milestone_projectId_fkey";`
+    );
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE "${schemaName}"."Milestone"
+        ADD CONSTRAINT "Milestone_projectId_fkey"
+          FOREIGN KEY ("projectId")
+          REFERENCES "${schemaName}"."Project"(id)
+          ON DELETE CASCADE;
+    `);
+    console.log(`  ✓ FK Milestone→Project configurada`);
+  } catch (e) {
+    console.log(`  ~ FK Milestone→Project: ya configurada o error menor`);
+  }
+
+  // 5. Parche idempotente de columnas v2.0
+  //    Necesario para tenants clonados antes de que existieran estos campos en public.
+  console.log(`Aplicando parche de columnas v2.0...`);
+
+  const patches: string[] = [
+    // Project — campos financieros y fechas
+    `ALTER TABLE "${schemaName}"."Project" ADD COLUMN IF NOT EXISTS budget DOUBLE PRECISION`,
+    `ALTER TABLE "${schemaName}"."Project" ADD COLUMN IF NOT EXISTS spent DOUBLE PRECISION`,
+    `ALTER TABLE "${schemaName}"."Project" ADD COLUMN IF NOT EXISTS "startDate" TIMESTAMPTZ`,
+    `ALTER TABLE "${schemaName}"."Project" ADD COLUMN IF NOT EXISTS "endDate" TIMESTAMPTZ`,
+    // Donation — separación Donaciones vs Grants
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS type TEXT NOT NULL DEFAULT 'DONATION'`,
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS "donorEmail" TEXT`,
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS notes TEXT`,
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS currency TEXT NOT NULL DEFAULT 'USD'`,
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS "isRestricted" BOOLEAN NOT NULL DEFAULT FALSE`,
+    `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS "funderOrg" TEXT`,
+  ];
+
+  for (const sql of patches) {
+    try {
+      await prisma.$executeRawUnsafe(sql);
+    } catch (_e) {
+      // ADD COLUMN IF NOT EXISTS nunca debería fallar, pero capturamos por seguridad
+    }
+  }
+  console.log(`  ✓ Parche v2.0 aplicado`);
+
+  // 6. Crear Super Admin Inicial (User es global en public)
   const email = `admin@${slug}.org`;
   const hashedPassword = await bcrypt.hash('admin123', 10);
-  
+
   await prisma.user.upsert({
-    where: { email },
+    where:  { email },
     update: {},
     create: {
       email,
-      name: `Administrador ${name}`,
-      password: hashedPassword,
-      role: 'SUPER_ADMIN',
+      name:               `Administrador ${name}`,
+      password:           hashedPassword,
+      role:               'SUPER_ADMIN',
       mustChangePassword: true,
     },
   });
 
-  console.log(`Tenant ${name} creado con éxito. Admin: ${email} / admin123`);
+  console.log(`\n✅ Tenant "${name}" creado con éxito.`);
+  console.log(`   Admin: ${email} / admin123`);
+  console.log(`   Schema: ${schemaName}`);
 }
 
 main()
