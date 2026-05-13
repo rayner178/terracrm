@@ -35,7 +35,7 @@ export function ProjectMetricsChart({ records }: Props) {
   const colors = ["#059669", "#0284c7", "#e11d48", "#d97706", "#7c3aed"];
 
   return (
-    <div className="h-[260px] w-full">
+    <div className="h-[260px] w-full bg-white rounded-xl" style={{ backgroundColor: 'white' }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
