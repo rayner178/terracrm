@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer,
+  Tooltip, ResponsiveContainer,
 } from "recharts";
 
 interface MetricRecord {
@@ -32,28 +32,16 @@ export function ProjectMetricsChart({ records }: Props) {
   });
 
   const data = Object.entries(grouped).map(([name, value]) => ({ name, value }));
-  const colors = ["#059669", "#0284c7", "#e11d48", "#d97706", "#7c3aed"];
 
   return (
-    <div className="h-[260px] w-full bg-white rounded-xl" style={{ backgroundColor: 'white' }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 40 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-          <XAxis
-            dataKey="name"
-            tick={{ fill: "#64748b", fontSize: 11 }}
-            tickLine={false}
-            axisLine={false}
-            angle={-20}
-            textAnchor="end"
-          />
-          <YAxis tick={{ fill: "#64748b", fontSize: 11 }} tickLine={false} axisLine={false} />
-          <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} />
-          <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-            {data.map((_, i) => (
-              <rect key={i} fill={colors[i % colors.length]} />
-            ))}
-          </Bar>
+    <div style={{ backgroundColor: "#ffffff", borderRadius: "8px", padding: "16px" }}>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+          <XAxis dataKey="name" tick={{ fill: "#64748b" }} />
+          <YAxis tick={{ fill: "#64748b" }} />
+          <Tooltip contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e2e8f0" }} />
+          <Bar dataKey="value" fill="#16a34a" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
