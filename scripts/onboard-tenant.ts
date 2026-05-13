@@ -55,22 +55,51 @@ async function main() {
     }
   }
 
-  // 4. Redirigir FK Milestone → Project al schema del tenant
+  // 4. Redirigir FKs al schema del tenant
   //    LIKE INCLUDING ALL copia FKs apuntando a public; las redefinimos.
-  try {
-    await prisma.$executeRawUnsafe(
-      `ALTER TABLE "${schemaName}"."Milestone" DROP CONSTRAINT IF EXISTS "Milestone_projectId_fkey";`
-    );
-    await prisma.$executeRawUnsafe(`
-      ALTER TABLE "${schemaName}"."Milestone"
-        ADD CONSTRAINT "Milestone_projectId_fkey"
-          FOREIGN KEY ("projectId")
-          REFERENCES "${schemaName}"."Project"(id)
-          ON DELETE CASCADE;
-    `);
-    console.log(`  ✓ FK Milestone→Project configurada`);
-  } catch (e) {
-    console.log(`  ~ FK Milestone→Project: ya configurada o error menor`);
+  const fkRedirects = [
+    // Milestone → Project
+    {
+      table: "Milestone",
+      constraint: "Milestone_projectId_fkey",
+      column: "projectId",
+      refTable: "Project",
+      onDelete: "CASCADE",
+    },
+    // ProjectAssignment → Project
+    {
+      table: "ProjectAssignment",
+      constraint: "ProjectAssignment_projectId_fkey",
+      column: "projectId",
+      refTable: "Project",
+      onDelete: "CASCADE",
+    },
+    // ProjectAssignment → Volunteer
+    {
+      table: "ProjectAssignment",
+      constraint: "ProjectAssignment_volunteerId_fkey",
+      column: "volunteerId",
+      refTable: "Volunteer",
+      onDelete: "CASCADE",
+    },
+  ];
+
+  for (const fk of fkRedirects) {
+    try {
+      await prisma.$executeRawUnsafe(
+        `ALTER TABLE "${schemaName}"."${fk.table}" DROP CONSTRAINT IF EXISTS "${fk.constraint}";`
+      );
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE "${schemaName}"."${fk.table}"
+          ADD CONSTRAINT "${fk.constraint}"
+            FOREIGN KEY ("${fk.column}")
+            REFERENCES "${schemaName}"."${fk.refTable}"(id)
+            ON DELETE ${fk.onDelete};
+      `);
+      console.log(`  ✓ FK ${fk.table}.${fk.column} → ${fk.refTable}`);
+    } catch (_e) {
+      console.log(`  ~ FK ${fk.table}.${fk.column}: ya configurada`);
+    }
   }
 
   // 5. Parche idempotente de columnas v2.0
@@ -90,6 +119,8 @@ async function main() {
     `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS currency TEXT NOT NULL DEFAULT 'USD'`,
     `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS "isRestricted" BOOLEAN NOT NULL DEFAULT FALSE`,
     `ALTER TABLE "${schemaName}"."Donation" ADD COLUMN IF NOT EXISTS "funderOrg" TEXT`,
+    // ProjectAssignment — assignedAt
+    `ALTER TABLE "${schemaName}"."ProjectAssignment" ADD COLUMN IF NOT EXISTS "assignedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()`,
   ];
 
   for (const sql of patches) {
