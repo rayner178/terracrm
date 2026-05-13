@@ -26,11 +26,12 @@ function StatusBadge({ status }: { status: string }) {
   return <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${cls}`}>{label}</span>;
 }
 
-export default async function ProjectDetailPage({ params }: { params: { id: string; locale: string } }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; locale: string }> }) {
+  const { id } = await params;
   const [t, locale, project] = await Promise.all([
     getTranslations("ProjectDetail"),
     getLocale(),
-    fetchProjectById(params.id),
+    fetchProjectById(id),
   ]);
 
   if (!project) notFound();
