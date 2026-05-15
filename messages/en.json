@@ -246,10 +246,15 @@
     "excelButton": "Download Excel (.xlsx)"
   },
   "NotFound": {
-    "title": "Page not found",
+    "title": "Resource not found",
     "subtitle": "The page you're looking for doesn't exist or was moved.",
     "goLogin": "Go to Login",
-    "goPublic": "Public Portal"
+    "goPublic": "Public Portal",
+    "goHome": "Go Home",
+    "defaultContext": "We couldn't find what you were looking for. Check the URL and try again.",
+    "projectContext": "The specified project does not exist or you do not have permission to view it.",
+    "volunteerContext": "The volunteer profile could not be located in the system.",
+    "fundingContext": "The financial record does not exist."
   },
   "ProjectDetail": {
     "backToProjects": "Back to Projects",
@@ -298,6 +303,9 @@
     "downloadPdf": "Download PDF Report",
     "coordinatorLabel": "Coordinator",
     "unassigned": "Unassigned",
-    "successCoordinator": "Coordinator updated successfully"
+    "successCoordinator": "Coordinator updated successfully",
+    "activitySection": "Activity History",
+    "noActivity": "No recent activity recorded.",
+    "progressTitle": "Overall Progress"
   }
 }

@@ -14,5 +14,5 @@ export interface AuditLog {
 
 export interface IAuditLogRepository {
   create(log: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog>;
-  getAll(filters?: { userId?: string; entity?: AuditEntity; startDate?: Date; endDate?: Date }): Promise<AuditLog[]>;
+  getAll(filters?: { userId?: string; entity?: AuditEntity; entityId?: string; startDate?: Date; endDate?: Date }): Promise<AuditLog[]>;
 }

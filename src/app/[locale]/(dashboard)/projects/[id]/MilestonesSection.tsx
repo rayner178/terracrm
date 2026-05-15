@@ -22,8 +22,28 @@ interface Props {
 export function MilestonesSection({ milestones, projectId }: Props) {
   const t = useTranslations("ProjectDetail");
 
+  const total = milestones.length;
+  const completed = milestones.filter(m => m.status === "COMPLETED").length;
+  const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+
   return (
     <div className="space-y-4">
+      {/* Progress Bar */}
+      {total > 0 && (
+        <div className="mb-4">
+          <div className="flex justify-between text-xs mb-1">
+            <span className="font-medium text-slate-600">{t("progressTitle")}</span>
+            <span className="font-semibold text-emerald-600">{progress}%</span>
+          </div>
+          <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div 
+              className="bg-emerald-500 h-2.5 rounded-full transition-all duration-500 ease-out" 
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
       {/* List */}
       {milestones.length === 0 ? (
         <p className="text-sm text-slate-400 italic">{t("noMilestones")}</p>

@@ -246,10 +246,15 @@
     "excelButton": "Descargar Excel (.xlsx)"
   },
   "NotFound": {
-    "title": "Página no encontrada",
+    "title": "Recurso no encontrado",
     "subtitle": "La página que buscas no existe o fue movida.",
     "goLogin": "Ir al Login",
-    "goPublic": "Portal Público"
+    "goPublic": "Portal Público",
+    "goHome": "Ir al Inicio",
+    "defaultContext": "No pudimos encontrar lo que buscabas. Revisa la URL e intenta nuevamente.",
+    "projectContext": "El proyecto especificado no existe o no tienes permisos para verlo.",
+    "volunteerContext": "El perfil del voluntario no pudo ser localizado en el sistema.",
+    "fundingContext": "El registro financiero no existe."
   },
   "ProjectDetail": {
     "backToProjects": "Volver a Proyectos",
@@ -298,6 +303,9 @@
     "downloadPdf": "Descargar Reporte PDF",
     "coordinatorLabel": "Coordinador",
     "unassigned": "Sin asignar",
-    "successCoordinator": "Coordinador actualizado exitosamente"
+    "successCoordinator": "Coordinador actualizado exitosamente",
+    "activitySection": "Historial de Actividad",
+    "noActivity": "No hay actividad reciente registrada.",
+    "progressTitle": "Avance General"
   }
 }

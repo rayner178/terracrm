@@ -30,13 +30,14 @@ function StatusBadge({ status }: { status: string }) {
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; locale: string }> }) {
   const { id } = await params;
-  const [t, locale, project, volunteersRes, metrics, coordinators] = await Promise.all([
+  const [t, locale, project, volunteersRes, metrics, coordinators, auditLogs] = await Promise.all([
     getTranslations("ProjectDetail"),
     getLocale(),
     fetchProjectById(id),
     container.getVolunteersUseCase.execute(1, 100),
     container.impactRepository.getDefinitions(),
     fetchCoordinators(),
+    container.getAuditLogsUseCase.execute({ entity: "PROJECT", entityId: id }),
   ]);
 
   const volunteers = volunteersRes?.data || [];
@@ -210,6 +211,28 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       {/* Milestones */}
       <SectionCard title={t("milestonesSection")}>
         <MilestonesSection milestones={project.milestones as any} projectId={project.id} />
+      </SectionCard>
+
+      {/* Activity History */}
+      <SectionCard title={t("activitySection")}>
+        {auditLogs.length === 0 ? (
+          <p className="text-sm text-slate-400 italic">{t("noActivity")}</p>
+        ) : (
+          <ul className="space-y-4">
+            {auditLogs.slice(0, 10).map((log) => (
+              <li key={log.id} className="text-sm">
+                <span className="font-medium text-slate-700">{log.action}</span>
+                <span className="text-slate-500 mx-2">—</span>
+                <span className="text-xs text-slate-400">{new Date(log.createdAt).toLocaleString()}</span>
+                {log.changes && Object.keys(log.changes).length > 0 && (
+                  <pre className="mt-1 text-xs bg-slate-50 p-2 rounded text-slate-600 overflow-x-auto">
+                    {JSON.stringify(log.changes, null, 2)}
+                  </pre>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </SectionCard>
     </div>
   );
