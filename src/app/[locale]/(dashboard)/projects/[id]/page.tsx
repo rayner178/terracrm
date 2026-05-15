@@ -7,7 +7,7 @@ import { ProjectMetricsChart } from "./ProjectMetricsChart";
 import { MilestonesSection } from "./MilestonesSection";
 import { FormWithToast } from "@/components/ui/FormWithToast";
 import { container } from "@/core/di/registry";
-import { ArrowLeft, MapPin, Calendar, Leaf } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Leaf, Download } from "lucide-react";
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -55,14 +55,24 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </Link>
         <div className="flex flex-wrap items-start gap-3">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 flex-wrap mb-2">
-              <h1 className="text-3xl font-bold text-slate-800 truncate">{project.name}</h1>
-              <StatusBadge status={project.status} />
-              {project.ecosystemType && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
-                  <Leaf className="w-3 h-3" /> {project.ecosystemType}
-                </span>
-              )}
+            <div className="flex items-center justify-between flex-wrap gap-4 mb-2">
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl font-bold text-slate-800 truncate">{project.name}</h1>
+                <StatusBadge status={project.status} />
+                {project.ecosystemType && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">
+                    <Leaf className="w-3 h-3" /> {project.ecosystemType}
+                  </span>
+                )}
+              </div>
+              <a 
+                href={`/api/reports/projects/${project.id}/pdf`} 
+                target="_blank"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
+              >
+                <Download className="w-4 h-4" />
+                {t("downloadPdf")}
+              </a>
             </div>
             {project.description && (
               <p className="text-slate-500 text-sm">{project.description}</p>

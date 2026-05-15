@@ -294,6 +294,7 @@
     "selectAlly": "Select ally...",
     "hoursPlaceholder": "Hours",
     "assignButton": "Assign",
-    "successAssign": "Ally assigned successfully"
+    "successAssign": "Ally assigned successfully",
+    "downloadPdf": "Download PDF Report"
   }
 }

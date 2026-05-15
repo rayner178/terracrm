@@ -294,6 +294,7 @@
     "selectAlly": "Seleccionar aliado...",
     "hoursPlaceholder": "Horas",
     "assignButton": "Asignar",
-    "successAssign": "Aliado asignado exitosamente"
+    "successAssign": "Aliado asignado exitosamente",
+    "downloadPdf": "Descargar Reporte PDF"
   }
 }
