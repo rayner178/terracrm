@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { MobileSidebarProvider } from "@/components/layout/MobileSidebarProvider";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { Toaster } from "sonner";
 
 export default async function DashboardLayout({
   children,
@@ -23,6 +24,8 @@ export default async function DashboardLayout({
           </main>
         </div>
       </div>
+      <Toaster position="top-right" richColors closeButton />
     </MobileSidebarProvider>
   );
 }
+

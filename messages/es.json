@@ -121,7 +121,9 @@
     "colName": "Nombre",
     "colEmail": "Email",
     "colSkills": "Habilidades",
-    "empty": "No hay voluntarios registrados aún."
+    "empty": "No hay voluntarios registrados aún.",
+    "emptyTitle": "Sin voluntarios registrados",
+    "emptySubtitle": "Agrega tu primer aliado usando el formulario de la izquierda."
   },
   "Projects": {
     "title": "Proyectos",
@@ -139,9 +141,16 @@
     "colLocation": "Ubicación",
     "colStatus": "Estado",
     "colActions": "Acciones",
+    "colHealth": "Salud",
     "actionStart": "Iniciar",
     "actionFinish": "Finalizar",
-    "empty": "No hay proyectos registrados."
+    "budgetLabel": "Presupuesto ($)",
+    "startDateLabel": "Inicio",
+    "endDateLabel": "Fin",
+    "optionalPlaceholder": "Opcional",
+    "empty": "No hay proyectos registrados.",
+    "emptyTitle": "Sin proyectos registrados",
+    "emptySubtitle": "Crea tu primer proyecto usando el formulario de la izquierda."
   },
   "Funding": {
     "title": "Donaciones y Fondos",

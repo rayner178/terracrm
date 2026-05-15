@@ -5,6 +5,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FolderKanban } from "lucide-react";
+
+function BudgetHealth({ budget, spent }: { budget: number | null; spent: number | null }) {
+  if (!budget || budget === 0) {
+    return <span className="inline-block w-2.5 h-2.5 rounded-full bg-slate-300" title="Sin presupuesto" />;
+  }
+  const ratio = (spent ?? 0) / budget;
+  const color = ratio >= 0.9 ? "bg-rose-500" : ratio >= 0.7 ? "bg-amber-400" : "bg-emerald-500";
+  const pct = Math.round(ratio * 100);
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className={`inline-block w-2.5 h-2.5 rounded-full ${color}`} />
+      <span className="text-xs text-slate-500">{pct}%</span>
+    </span>
+  );
+}
 
 export default async function ProjectsPage() {
   const [t, locale, projects] = await Promise.all([
@@ -55,16 +71,16 @@ export default async function ProjectsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Presupuesto ($)</label>
-                <Input name="budget" type="number" step="0.01" min="0" placeholder="Opcional" className="bg-slate-50" />
+                <label className="text-sm font-medium text-slate-700">{t("budgetLabel")}</label>
+                <Input name="budget" type="number" step="0.01" min="0" placeholder={t("optionalPlaceholder")} className="bg-slate-50" />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Inicio</label>
+                  <label className="text-sm font-medium text-slate-700">{t("startDateLabel")}</label>
                   <Input name="startDate" type="date" className="bg-slate-50" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Fin</label>
+                  <label className="text-sm font-medium text-slate-700">{t("endDateLabel")}</label>
                   <Input name="endDate" type="date" className="bg-slate-50" />
                 </div>
               </div>
@@ -80,56 +96,63 @@ export default async function ProjectsPage() {
             <CardTitle className="text-lg">{t("portfolioTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="border rounded-md">
-              <Table>
-                <TableHeader className="bg-slate-50">
-                  <TableRow>
-                    <TableHead>{t("colProject")}</TableHead>
-                    <TableHead>{t("colLocation")}</TableHead>
-                    <TableHead>{t("colStatus")}</TableHead>
-                    <TableHead>{t("colActions")}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {projects.length === 0 && (
+            {projects.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+                  <FolderKanban className="w-7 h-7 text-emerald-400" />
+                </div>
+                <p className="text-slate-500 font-medium mb-1">{t("emptyTitle")}</p>
+                <p className="text-sm text-slate-400">{t("emptySubtitle")}</p>
+              </div>
+            ) : (
+              <div className="border rounded-md">
+                <Table>
+                  <TableHeader className="bg-slate-50">
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-slate-500 py-8">
-                        {t("empty")}
-                      </TableCell>
+                      <TableHead>{t("colProject")}</TableHead>
+                      <TableHead>{t("colLocation")}</TableHead>
+                      <TableHead>{t("colStatus")}</TableHead>
+                      <TableHead>{t("colHealth")}</TableHead>
+                      <TableHead>{t("colActions")}</TableHead>
                     </TableRow>
-                  )}
-                  {projects.map((proj) => (
-                    <TableRow key={proj.id}>
-                      <TableCell className="font-medium">
-                        <Link
-                          href={`/${locale}/projects/${proj.id}`}
-                          className="text-slate-800 hover:text-emerald-600 transition-colors hover:underline"
-                        >
-                          {proj.name}
-                        </Link>
-                      </TableCell>
-                      <TableCell className="text-slate-600">{proj.location || "—"}</TableCell>
-                      <TableCell>{getStatusBadge(proj.status)}</TableCell>
-                      <TableCell>
-                        <form action={updateProjectStatusAction} className="flex gap-2">
-                          <input type="hidden" name="id" value={proj.id} />
-                          {proj.status === "PLANNING" && (
-                            <Button type="submit" name="status" value="ACTIVE" size="sm" variant="outline" className="h-8">
-                              {t("actionStart")}
-                            </Button>
-                          )}
-                          {proj.status === "ACTIVE" && (
-                            <Button type="submit" name="status" value="COMPLETED" size="sm" variant="outline" className="h-8">
-                              {t("actionFinish")}
-                            </Button>
-                          )}
-                        </form>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {projects.map((proj) => (
+                      <TableRow key={proj.id}>
+                        <TableCell className="font-medium">
+                          <Link
+                            href={`/${locale}/projects/${proj.id}`}
+                            className="text-slate-800 hover:text-emerald-600 transition-colors hover:underline"
+                          >
+                            {proj.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell className="text-slate-600">{proj.location || "—"}</TableCell>
+                        <TableCell>{getStatusBadge(proj.status)}</TableCell>
+                        <TableCell>
+                          <BudgetHealth budget={proj.budget} spent={proj.spent} />
+                        </TableCell>
+                        <TableCell>
+                          <form action={updateProjectStatusAction} className="flex gap-2">
+                            <input type="hidden" name="id" value={proj.id} />
+                            {proj.status === "PLANNING" && (
+                              <Button type="submit" name="status" value="ACTIVE" size="sm" variant="outline" className="h-8">
+                                {t("actionStart")}
+                              </Button>
+                            )}
+                            {proj.status === "ACTIVE" && (
+                              <Button type="submit" name="status" value="COMPLETED" size="sm" variant="outline" className="h-8">
+                                {t("actionFinish")}
+                              </Button>
+                            )}
+                          </form>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
