@@ -6,6 +6,7 @@ import { PrismaProjectRepository } from "@/modules/projects/infrastructure/prism
 import { GetProjectsUseCase } from "@/modules/projects/application/getProjectsUseCase";
 import { CreateProjectUseCase } from "@/modules/projects/application/createProjectUseCase";
 import { GetProjectByIdUseCase } from "@/modules/projects/application/getProjectByIdUseCase";
+import { AssignVolunteerUseCase } from "@/modules/projects/application/assignVolunteerUseCase";
 import { CreateMilestoneUseCase } from "@/modules/projects/application/createMilestoneUseCase";
 import { ToggleMilestoneUseCase } from "@/modules/projects/application/toggleMilestoneUseCase";
 import { DeleteMilestoneUseCase } from "@/modules/projects/application/deleteMilestoneUseCase";
@@ -61,6 +62,7 @@ class Registry {
   get getProjectsUseCase() { return new GetProjectsUseCase(this.projectRepository); }
   get createProjectUseCase() { return new CreateProjectUseCase(this.projectRepository); }
   get getProjectByIdUseCase() { return new GetProjectByIdUseCase(this.projectRepository); }
+  get assignVolunteerUseCase() { return new AssignVolunteerUseCase(this.projectRepository); }
 
   // Milestone Module
   get milestoneRepository() {

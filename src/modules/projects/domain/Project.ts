@@ -47,4 +47,5 @@ export interface IProjectRepository {
   getById(id: string): Promise<ProjectDetail | null>;
   create(data: Omit<Project, "id" | "createdAt" | "updatedAt">): Promise<Project>;
   updateStatus(id: string, status: string): Promise<Project>;
+  assignVolunteer(projectId: string, volunteerId: string, hoursWorked?: number): Promise<void>;
 }

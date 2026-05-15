@@ -286,6 +286,14 @@
     "endDateLabel": "Fecha de Fin",
     "successCreateMilestone": "Hito creado exitosamente",
     "successToggleMilestone": "Estado del hito actualizado",
-    "successDeleteMilestone": "Hito eliminado"
+    "successDeleteMilestone": "Hito eliminado",
+    "selectMetric": "Seleccionar métrica...",
+    "metricValuePlaceholder": "Valor",
+    "registerButton": "Registrar",
+    "successMetric": "Métrica registrada exitosamente",
+    "selectAlly": "Seleccionar aliado...",
+    "hoursPlaceholder": "Horas",
+    "assignButton": "Asignar",
+    "successAssign": "Aliado asignado exitosamente"
   }
 }

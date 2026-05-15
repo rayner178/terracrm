@@ -1,10 +1,12 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { fetchProjectById } from "./actions";
+import { fetchProjectById, assignVolunteerAction, recordProjectMetricAction } from "./actions";
 import { ProjectFinanceBar } from "./ProjectFinanceBar";
 import { ProjectMetricsChart } from "./ProjectMetricsChart";
 import { MilestonesSection } from "./MilestonesSection";
+import { FormWithToast } from "@/components/ui/FormWithToast";
+import { container } from "@/core/di/registry";
 import { ArrowLeft, MapPin, Calendar, Leaf } from "lucide-react";
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
@@ -28,11 +30,15 @@ function StatusBadge({ status }: { status: string }) {
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; locale: string }> }) {
   const { id } = await params;
-  const [t, locale, project] = await Promise.all([
+  const [t, locale, project, volunteersRes, metrics] = await Promise.all([
     getTranslations("ProjectDetail"),
     getLocale(),
     fetchProjectById(id),
+    container.getVolunteersUseCase.execute(1, 100),
+    container.impactRepository.getDefinitions(),
   ]);
+
+  const volunteers = volunteersRes?.data || [];
 
   if (!project) notFound();
 
@@ -89,34 +95,61 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
       {/* Metrics */}
       <SectionCard title={t("metricsSection")}>
-        <ProjectMetricsChart records={project.metricRecords as any} />
+        <div className="flex flex-col gap-4">
+          <FormWithToast action={recordProjectMetricAction} successMessage={t("successMetric")} className="flex gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-200 flex-wrap">
+            <input type="hidden" name="projectId" value={project.id} />
+            <select name="metricDefinitionId" required className="flex-1 min-w-[150px] h-9 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+              <option value="">{t("selectMetric")}</option>
+              {metrics.map(m => <option key={m.id} value={m.id}>{m.name} ({m.unit})</option>)}
+            </select>
+            <input type="number" name="value" placeholder={t("metricValuePlaceholder")} step="0.01" required className="w-24 h-9 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+            <button type="submit" className="h-9 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">
+              {t("registerButton")}
+            </button>
+          </FormWithToast>
+          <ProjectMetricsChart records={project.metricRecords as any} />
+        </div>
       </SectionCard>
 
       {/* Allies */}
       <SectionCard title={t("alliesSection")}>
-        {project.assignments.length === 0 ? (
-          <p className="text-sm text-slate-400 italic">{t("noAllies")}</p>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="text-xs text-slate-500 uppercase border-b border-slate-100">
-              <tr>
-                <th className="text-left py-2">{t("colAlly")}</th>
-                <th className="text-right py-2">{t("colHours")}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {project.assignments.map((a) => (
-                <tr key={a.id}>
-                  <td className="py-2 font-medium text-slate-700">
-                    {a.volunteer.firstName} {a.volunteer.lastName}
-                    <span className="ml-2 text-xs text-slate-400">{a.volunteer.email}</span>
-                  </td>
-                  <td className="py-2 text-right text-slate-600">{a.hoursWorked}h</td>
+        <div className="flex flex-col gap-4">
+          <FormWithToast action={assignVolunteerAction} successMessage={t("successAssign")} className="flex gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-200 flex-wrap">
+            <input type="hidden" name="projectId" value={project.id} />
+            <select name="volunteerId" required className="flex-1 min-w-[150px] h-9 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+              <option value="">{t("selectAlly")}</option>
+              {volunteers.map(v => <option key={v.id} value={v.id}>{v.firstName} {v.lastName}</option>)}
+            </select>
+            <input type="number" name="hoursWorked" placeholder={t("hoursPlaceholder")} min="0" className="w-24 h-9 px-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+            <button type="submit" className="h-9 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">
+              {t("assignButton")}
+            </button>
+          </FormWithToast>
+          
+          {project.assignments.length === 0 ? (
+            <p className="text-sm text-slate-400 italic">{t("noAllies")}</p>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="text-xs text-slate-500 uppercase border-b border-slate-100">
+                <tr>
+                  <th className="text-left py-2">{t("colAlly")}</th>
+                  <th className="text-right py-2">{t("colHours")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {project.assignments.map((a) => (
+                  <tr key={a.id}>
+                    <td className="py-2 font-medium text-slate-700">
+                      {a.volunteer.firstName} {a.volunteer.lastName}
+                      <span className="ml-2 text-xs text-slate-400">{a.volunteer.email}</span>
+                    </td>
+                    <td className="py-2 text-right text-slate-600">{a.hoursWorked}h</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </SectionCard>
 
       {/* Donations */}

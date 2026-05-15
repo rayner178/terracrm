@@ -45,4 +45,25 @@ export class PrismaProjectRepository implements IProjectRepository {
     });
     return ProjectMapper.toDomain(project);
   }
+
+  async assignVolunteer(projectId: string, volunteerId: string, hoursWorked: number = 0): Promise<void> {
+    await prisma.projectAssignment.upsert({
+      where: {
+        volunteerId_projectId: {
+          volunteerId,
+          projectId,
+        },
+      },
+      create: {
+        volunteerId,
+        projectId,
+        hoursWorked,
+      },
+      update: {
+        hoursWorked: {
+          increment: hoursWorked,
+        },
+      },
+    });
+  }
 }

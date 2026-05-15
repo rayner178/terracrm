@@ -286,6 +286,14 @@
     "endDateLabel": "End Date",
     "successCreateMilestone": "Milestone created successfully",
     "successToggleMilestone": "Milestone status updated",
-    "successDeleteMilestone": "Milestone deleted successfully"
+    "successDeleteMilestone": "Milestone deleted successfully",
+    "selectMetric": "Select metric...",
+    "metricValuePlaceholder": "Value",
+    "registerButton": "Register",
+    "successMetric": "Metric registered successfully",
+    "selectAlly": "Select ally...",
+    "hoursPlaceholder": "Hours",
+    "assignButton": "Assign",
+    "successAssign": "Ally assigned successfully"
   }
 }

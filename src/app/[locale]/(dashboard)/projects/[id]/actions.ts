@@ -48,3 +48,42 @@ export async function deleteMilestoneAction(formData: FormData): Promise<any> {
     return { success: false, error: error.message || "Error interno" };
   }
 }
+
+export async function assignVolunteerAction(formData: FormData): Promise<any> {
+  try {
+    const projectId = formData.get("projectId") as string;
+    const volunteerId = formData.get("volunteerId") as string;
+    const hoursRaw = formData.get("hoursWorked") as string;
+    const hoursWorked = hoursRaw ? parseInt(hoursRaw) : 0;
+    
+    await container.assignVolunteerUseCase.execute(projectId, volunteerId, hoursWorked);
+    revalidatePath(`/projects/${projectId}`);
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message || "Error interno" };
+  }
+}
+
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+
+export async function recordProjectMetricAction(formData: FormData): Promise<any> {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) throw new Error("No autorizado");
+
+    const data = {
+      metricDefinitionId: formData.get("metricDefinitionId") as string,
+      projectId: formData.get("projectId") as string,
+      value: Number(formData.get("value")),
+      recordedById: (session.user as any).id,
+      userRole: (session.user as any).role,
+    };
+
+    await container.recordMetricUseCase.execute(data);
+    revalidatePath(`/projects/${data.projectId}`);
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message || "Error interno" };
+  }
+}
