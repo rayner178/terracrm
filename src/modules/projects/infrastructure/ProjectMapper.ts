@@ -16,6 +16,7 @@ export class ProjectMapper {
       endDate: p.endDate,
       createdAt: p.createdAt,
       updatedAt: p.updatedAt,
+      coordinatorId: p.coordinatorId,
     };
   }
 }

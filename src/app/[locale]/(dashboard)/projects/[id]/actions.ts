@@ -87,3 +87,24 @@ export async function recordProjectMetricAction(formData: FormData): Promise<any
     return { success: false, error: error.message || "Error interno" };
   }
 }
+
+import { prisma } from "@/infrastructure/database/prisma";
+
+export async function fetchCoordinators() {
+  return prisma.user.findMany({
+    select: { id: true, name: true, email: true },
+    orderBy: { name: "asc" }
+  });
+}
+
+export async function updateCoordinatorAction(formData: FormData): Promise<any> {
+  try {
+    const id = formData.get("projectId") as string;
+    const coordinatorId = formData.get("coordinatorId") as string;
+    await container.projectRepository.updateCoordinator(id, coordinatorId);
+    revalidatePath(`/projects/${id}`);
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message || "Error interno" };
+  }
+}

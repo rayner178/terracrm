@@ -32,6 +32,7 @@ export class CreateProjectUseCase {
       spent:         parsed.data.spent ?? null,
       startDate:     parsed.data.startDate ?? null,
       endDate:       parsed.data.endDate ?? null,
+      coordinatorId: null,
     });
   }
 }

@@ -27,6 +27,9 @@ export class PrismaProjectRepository implements IProjectRepository {
         milestones: {
           orderBy: { createdAt: "asc" },
         },
+        coordinator: {
+          select: { id: true, name: true, email: true },
+        },
       },
     });
     if (!project) return null;
@@ -42,6 +45,14 @@ export class PrismaProjectRepository implements IProjectRepository {
     const project = await prisma.project.update({
       where: { id },
       data: { status },
+    });
+    return ProjectMapper.toDomain(project);
+  }
+
+  async updateCoordinator(id: string, coordinatorId: string): Promise<Project> {
+    const project = await prisma.project.update({
+      where: { id },
+      data: { coordinatorId: coordinatorId || null },
     });
     return ProjectMapper.toDomain(project);
   }

@@ -295,6 +295,9 @@
     "hoursPlaceholder": "Horas",
     "assignButton": "Asignar",
     "successAssign": "Aliado asignado exitosamente",
-    "downloadPdf": "Descargar Reporte PDF"
+    "downloadPdf": "Descargar Reporte PDF",
+    "coordinatorLabel": "Coordinador",
+    "unassigned": "Sin asignar",
+    "successCoordinator": "Coordinador actualizado exitosamente"
   }
 }

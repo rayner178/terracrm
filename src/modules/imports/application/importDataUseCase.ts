@@ -103,6 +103,7 @@ export class ImportDataUseCase {
           spent:        null,
           startDate:    null,
           endDate:      null,
+          coordinatorId: null,
         });
         break;
       }

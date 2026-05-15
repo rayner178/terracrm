@@ -1,7 +1,7 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { fetchProjectById, assignVolunteerAction, recordProjectMetricAction } from "./actions";
+import { fetchProjectById, assignVolunteerAction, recordProjectMetricAction, fetchCoordinators, updateCoordinatorAction } from "./actions";
 import { ProjectFinanceBar } from "./ProjectFinanceBar";
 import { ProjectMetricsChart } from "./ProjectMetricsChart";
 import { MilestonesSection } from "./MilestonesSection";
@@ -30,12 +30,13 @@ function StatusBadge({ status }: { status: string }) {
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; locale: string }> }) {
   const { id } = await params;
-  const [t, locale, project, volunteersRes, metrics] = await Promise.all([
+  const [t, locale, project, volunteersRes, metrics, coordinators] = await Promise.all([
     getTranslations("ProjectDetail"),
     getLocale(),
     fetchProjectById(id),
     container.getVolunteersUseCase.execute(1, 100),
     container.impactRepository.getDefinitions(),
+    fetchCoordinators(),
   ]);
 
   const volunteers = volunteersRes?.data || [];
@@ -74,9 +75,27 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 {t("downloadPdf")}
               </a>
             </div>
-            {project.description && (
-              <p className="text-slate-500 text-sm">{project.description}</p>
-            )}
+            <div className="flex items-center gap-4 flex-wrap mb-4">
+              {project.description && (
+                <p className="text-slate-500 text-sm max-w-2xl">{project.description}</p>
+              )}
+              
+              <FormWithToast action={updateCoordinatorAction} successMessage={t("successCoordinator")} className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                <input type="hidden" name="projectId" value={project.id} />
+                <span className="text-xs font-medium text-slate-500">{t("coordinatorLabel")}:</span>
+                <select 
+                  name="coordinatorId" 
+                  defaultValue={project.coordinator?.id || ""} 
+                  onChange={(e) => e.target.form?.requestSubmit()}
+                  className="bg-transparent text-sm font-medium text-slate-700 focus:outline-none cursor-pointer"
+                >
+                  <option value="">{t("unassigned")}</option>
+                  {coordinators.map(c => (
+                    <option key={c.id} value={c.id}>{c.name || c.email}</option>
+                  ))}
+                </select>
+              </FormWithToast>
+            </div>
             <div className="flex flex-wrap gap-4 mt-2 text-sm text-slate-500">
               {project.location && (
                 <span className="flex items-center gap-1">

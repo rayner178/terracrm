@@ -295,6 +295,9 @@
     "hoursPlaceholder": "Hours",
     "assignButton": "Assign",
     "successAssign": "Ally assigned successfully",
-    "downloadPdf": "Download PDF Report"
+    "downloadPdf": "Download PDF Report",
+    "coordinatorLabel": "Coordinator",
+    "unassigned": "Unassigned",
+    "successCoordinator": "Coordinator updated successfully"
   }
 }
