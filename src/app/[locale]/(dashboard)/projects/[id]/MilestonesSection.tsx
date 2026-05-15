@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { CheckCircle2, Circle, Trash2 } from "lucide-react";
 import { toggleMilestoneAction, deleteMilestoneAction, createMilestoneAction } from "./actions";
-import { useRef } from "react";
+import { FormWithToast } from "@/components/ui/FormWithToast";
 
 interface Milestone {
   id: string;
@@ -21,7 +21,6 @@ interface Props {
 
 export function MilestonesSection({ milestones, projectId }: Props) {
   const t = useTranslations("ProjectDetail");
-  const formRef = useRef<HTMLFormElement>(null);
 
   return (
     <div className="space-y-4">
@@ -33,7 +32,7 @@ export function MilestonesSection({ milestones, projectId }: Props) {
           {milestones.map((m) => (
             <li key={m.id} className="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50">
               {/* Toggle */}
-              <form action={toggleMilestoneAction}>
+              <FormWithToast action={toggleMilestoneAction} successMessage={t("successToggleMilestone")}>
                 <input type="hidden" name="id" value={m.id} />
                 <input type="hidden" name="currentStatus" value={m.status} />
                 <input type="hidden" name="projectId" value={projectId} />
@@ -42,7 +41,7 @@ export function MilestonesSection({ milestones, projectId }: Props) {
                     ? <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                     : <Circle className="w-5 h-5" />}
                 </button>
-              </form>
+              </FormWithToast>
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-medium ${m.status === "COMPLETED" ? "line-through text-slate-400" : "text-slate-800"}`}>
@@ -61,7 +60,7 @@ export function MilestonesSection({ milestones, projectId }: Props) {
                 )}
               </div>
               {/* Delete */}
-              <form action={deleteMilestoneAction}>
+              <FormWithToast action={deleteMilestoneAction} successMessage={t("successDeleteMilestone")}>
                 <input type="hidden" name="id" value={m.id} />
                 <input type="hidden" name="projectId" value={projectId} />
                 <button
@@ -71,19 +70,16 @@ export function MilestonesSection({ milestones, projectId }: Props) {
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
-              </form>
+              </FormWithToast>
             </li>
           ))}
         </ul>
       )}
 
       {/* Add form */}
-      <form
-        ref={formRef}
-        action={async (fd) => {
-          await createMilestoneAction(fd);
-          formRef.current?.reset();
-        }}
+      <FormWithToast
+        action={createMilestoneAction}
+        successMessage={t("successCreateMilestone")}
         className="border border-dashed border-slate-300 rounded-xl p-4 space-y-3 bg-white"
       >
         <input type="hidden" name="projectId" value={projectId} />
@@ -112,7 +108,7 @@ export function MilestonesSection({ milestones, projectId }: Props) {
         >
           {t("milestoneSubmit")}
         </button>
-      </form>
+      </FormWithToast>
     </div>
   );
 }

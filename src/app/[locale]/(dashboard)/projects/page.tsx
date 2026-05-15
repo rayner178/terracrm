@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FolderKanban } from "lucide-react";
+import { FormWithToast } from "@/components/ui/FormWithToast";
 
 function BudgetHealth({ budget, spent }: { budget: number | null; spent: number | null }) {
   if (!budget || budget === 0) {
@@ -49,7 +50,7 @@ export default async function ProjectsPage() {
             <CardTitle className="text-lg">{t("createTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <form action={createProjectAction} className="space-y-4">
+            <FormWithToast action={createProjectAction} successMessage={t("successCreate")} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700">{t("nameLabel")}</label>
                 <Input name="name" required className="bg-slate-50" />
@@ -87,7 +88,7 @@ export default async function ProjectsPage() {
               <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                 {t("createButton")}
               </Button>
-            </form>
+            </FormWithToast>
           </CardContent>
         </Card>
 
@@ -133,7 +134,7 @@ export default async function ProjectsPage() {
                           <BudgetHealth budget={proj.budget} spent={proj.spent} />
                         </TableCell>
                         <TableCell>
-                          <form action={updateProjectStatusAction} className="flex gap-2">
+                          <FormWithToast action={updateProjectStatusAction} successMessage={t("successStatus")} className="flex gap-2">
                             <input type="hidden" name="id" value={proj.id} />
                             {proj.status === "PLANNING" && (
                               <Button type="submit" name="status" value="ACTIVE" size="sm" variant="outline" className="h-8">
@@ -145,7 +146,7 @@ export default async function ProjectsPage() {
                                 {t("actionFinish")}
                               </Button>
                             )}
-                          </form>
+                          </FormWithToast>
                         </TableCell>
                       </TableRow>
                     ))}

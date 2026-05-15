@@ -123,7 +123,8 @@
     "colSkills": "Skills",
     "empty": "No volunteers registered yet.",
     "emptyTitle": "No volunteers registered",
-    "emptySubtitle": "Add your first ally using the form on the left."
+    "emptySubtitle": "Add your first ally using the form on the left.",
+    "successCreate": "Volunteer saved successfully"
   },
   "Projects": {
     "title": "Projects",
@@ -150,7 +151,9 @@
     "optionalPlaceholder": "Optional",
     "empty": "No projects registered yet.",
     "emptyTitle": "No projects registered",
-    "emptySubtitle": "Create your first project using the form on the left."
+    "emptySubtitle": "Create your first project using the form on the left.",
+    "successCreate": "Project created successfully",
+    "successStatus": "Status updated successfully"
   },
   "Funding": {
     "title": "Donations & Funds",
@@ -175,10 +178,12 @@
     "donationsTotal": "Total Donations",
     "funderOrgLabel": "Funding Organization",
     "notesLabel": "Notes",
-    "isRestrictedLabel": "Restricted to project",
+    "isRestrictedLabel": "Project restricted",
     "registerGrantButton": "Register Grant",
     "colType": "Type",
-    "colFunder": "Funder"
+    "colFunder": "Funder",
+    "successDonation": "Donation registered successfully",
+    "successGrant": "Grant registered successfully"
   },
   "Import": {
     "pageTitle": "Import Data",
@@ -278,6 +283,9 @@
     "notDefined": "Not defined",
     "budgetLabel2": "Budget ($)",
     "startDateLabel": "Start Date",
-    "endDateLabel": "End Date"
+    "endDateLabel": "End Date",
+    "successCreateMilestone": "Milestone created successfully",
+    "successToggleMilestone": "Milestone status updated",
+    "successDeleteMilestone": "Milestone deleted successfully"
   }
 }

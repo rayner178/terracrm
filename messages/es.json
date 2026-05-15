@@ -123,7 +123,8 @@
     "colSkills": "Habilidades",
     "empty": "No hay voluntarios registrados aún.",
     "emptyTitle": "Sin voluntarios registrados",
-    "emptySubtitle": "Agrega tu primer aliado usando el formulario de la izquierda."
+    "emptySubtitle": "Agrega tu primer aliado usando el formulario de la izquierda.",
+    "successCreate": "Voluntario guardado exitosamente"
   },
   "Projects": {
     "title": "Proyectos",
@@ -150,7 +151,9 @@
     "optionalPlaceholder": "Opcional",
     "empty": "No hay proyectos registrados.",
     "emptyTitle": "Sin proyectos registrados",
-    "emptySubtitle": "Crea tu primer proyecto usando el formulario de la izquierda."
+    "emptySubtitle": "Crea tu primer proyecto usando el formulario de la izquierda.",
+    "successCreate": "Proyecto creado exitosamente",
+    "successStatus": "Estado actualizado exitosamente"
   },
   "Funding": {
     "title": "Donaciones y Fondos",
@@ -178,7 +181,9 @@
     "isRestrictedLabel": "Restringido por proyecto",
     "registerGrantButton": "Registrar Grant",
     "colType": "Tipo",
-    "colFunder": "Financiadora"
+    "colFunder": "Financiadora",
+    "successDonation": "Donación registrada exitosamente",
+    "successGrant": "Grant registrado exitosamente"
   },
   "Import": {
     "pageTitle": "Importar Datos",
@@ -278,6 +283,9 @@
     "notDefined": "No definido",
     "budgetLabel2": "Presupuesto ($)",
     "startDateLabel": "Fecha de Inicio",
-    "endDateLabel": "Fecha de Fin"
+    "endDateLabel": "Fecha de Fin",
+    "successCreateMilestone": "Hito creado exitosamente",
+    "successToggleMilestone": "Estado del hito actualizado",
+    "successDeleteMilestone": "Hito eliminado"
   }
 }

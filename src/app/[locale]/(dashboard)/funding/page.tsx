@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormWithToast } from "@/components/ui/FormWithToast";
 
 export default async function FundingPage() {
   const t = await getTranslations("Funding");
@@ -53,7 +54,7 @@ export default async function FundingPage() {
           <Card className="col-span-1 border-0 shadow-sm h-fit">
             <CardHeader><CardTitle className="text-base">{t("registerTitle")}</CardTitle></CardHeader>
             <CardContent>
-              <form action={createDonationAction} className="space-y-4">
+              <FormWithToast action={createDonationAction} successMessage={t("successDonation")} className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">{t("donorLabel")}</label>
                   <Input name="donorName" required className="bg-slate-50" />
@@ -74,7 +75,7 @@ export default async function FundingPage() {
                 <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                   {t("registerButton")}
                 </Button>
-              </form>
+              </FormWithToast>
             </CardContent>
           </Card>
 
@@ -122,7 +123,7 @@ export default async function FundingPage() {
           <Card className="col-span-1 border-0 shadow-sm h-fit">
             <CardHeader><CardTitle className="text-base">{t("registerTitle")}</CardTitle></CardHeader>
             <CardContent>
-              <form action={createGrantAction} className="space-y-4">
+              <FormWithToast action={createGrantAction} successMessage={t("successGrant")} className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">{t("funderOrgLabel")}</label>
                   <Input name="funderOrg" required className="bg-slate-50" placeholder="USAID, GEF, ONU..." />
@@ -152,7 +153,7 @@ export default async function FundingPage() {
                 <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                   {t("registerGrantButton")}
                 </Button>
-              </form>
+              </FormWithToast>
             </CardContent>
           </Card>
 

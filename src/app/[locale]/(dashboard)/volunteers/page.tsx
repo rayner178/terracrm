@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Users } from "lucide-react";
+import { FormWithToast } from "@/components/ui/FormWithToast";
 
 export default async function VolunteersPage() {
   const t = await getTranslations("Volunteers");
@@ -23,7 +24,7 @@ export default async function VolunteersPage() {
             <CardTitle className="text-lg">{t("addTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <form action={createVolunteerAction} className="space-y-4">
+            <FormWithToast action={createVolunteerAction} successMessage={t("successCreate")} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700">{t("firstNameLabel")}</label>
                 <Input name="firstName" required className="bg-slate-50" />
@@ -47,7 +48,7 @@ export default async function VolunteersPage() {
               <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                 {t("saveButton")}
               </Button>
-            </form>
+            </FormWithToast>
           </CardContent>
         </Card>
 
