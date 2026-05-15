@@ -24,7 +24,15 @@ describe("CreateDonationUseCase", () => {
     expect(mockRepo.create).toHaveBeenCalledWith({
       donorName: "John Doe",
       amount: 100,
-      projectId: null
+      projectId: undefined,
+      currency: "USD",
+      donorEmail: null,
+      funderOrg: null,
+      isRecurring: false,
+      isRestricted: false,
+      locale: "es",
+      notes: null,
+      type: "DONATION",
     });
   });
 
